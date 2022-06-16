@@ -1,0 +1,471 @@
+[
+{
+	"Name": "wordpress",
+	"VersionDirectoryRegex": "wordpress-(.*)",
+	"DirectoryExcludeRegex": "(wp-admin|themes)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "joomla",
+	"VersionDirectoryRegex": "joomla-(.*)",
+	"DirectoryExcludeRegex": "(installation|administrator|cache|cli|components|includes|logs|modules|tmp|banners|sampledata)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "movabletype",
+	"VersionDirectoryRegex": "movabletype-(.*)",
+	"DirectoryExcludeRegex": "(alt-tmpl|build|addons|default_templates|tools|extlib|import|lib|php|plugins|search_templates|tmpl|tools|extlib)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "drupal",
+	"VersionDirectoryRegex": "drupal-(.*)",
+	"DirectoryExcludeRegex": "(database|includes|modules|scripts|sites|vendor|lib)$",
+    "FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "mediawiki",
+	"VersionDirectoryRegex": "mediawiki-(.*)",
+	"DirectoryExcludeRegex": "(installation|administrator|maintenance|includes|math|bin|serialized|tests|vendor|languages)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "oscommerce",
+	"VersionDirectoryRegex": "oscommerce-(.*)",
+	"DirectoryExcludeRegex": "(includes|install|admin|download)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "phpbb",
+	"VersionDirectoryRegex": "phpBB-(.*)",
+	"DirectoryExcludeRegex": "(cache|docs|adm|download|files|store)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "prestashop",
+	"VersionDirectoryRegex": "PrestaShop-(.*)",
+	"DirectoryExcludeRegex": "(admin|app|config|cache|t|classes|docs|config|controllers|download|install|localization|log|mails|modules|override|themes|tools|translations|upload|webservice|core|install-dev|pdf|tests|travis-scripts|src|vendor|.composer|.github|admin-dev|override)$",
+    "FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "abantecart",
+	"VersionDirectoryRegex": "abantecart-(.*)",
+	"DirectoryExcludeRegex": "(admin|core|download|extension|install|system)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|LICENSE|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "ampache",
+	"VersionDirectoryRegex": "ampache-(.*)",
+	"DirectoryExcludeRegex": "(admin|bin|config|daap|server|scripts|sql|rest|templates|dap|webdav|.github|.tx|webdav)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|LICENSE|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "atutor",
+	"VersionDirectoryRegex": "atutor-(.*)",
+	"DirectoryExcludeRegex": "(admin|help|inbox|mods|tools|users)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "chamilo",
+	"VersionDirectoryRegex": "Chamilo-(.*)",
+	"DirectoryExcludeRegex": "(archive|certificates|main|olds|users|vendor|bin)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "claroline",
+	"VersionDirectoryRegex": "claroline-(.*)",
+	"DirectoryExcludeRegex": "(upgrade|packages|themes|packages|vendor|vendors)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "collabtive",
+	"VersionDirectoryRegex": "Collabtive-(.*)",
+	"DirectoryExcludeRegex": "(config|files|internals|plugins|language|templates|vendor)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "concrete5",
+	"VersionDirectoryRegex": "concrete5-(.*)",
+	"DirectoryExcludeRegex": "(files|helpers|models|page_types|application|packages|updates|authentication|blocks|bin|bootstrap|config|controllers|elements|jobs|mail|single_pages|src|themes|tools|vendor|views|flash|libraries)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "coppermine",
+	"VersionDirectoryRegex": "Coppermine-(.*)",
+	"DirectoryExcludeRegex": "(albums|bridge|include|lang|logs|plugins|sql|)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "cubecart",
+	"VersionDirectoryRegex": "CubeCart-(.*)",
+	"DirectoryExcludeRegex": "(admin|backup|cache|classes|contollers|files|includes|modules)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+
+{
+	"Name": "dotclear",
+	"VersionDirectoryRegex": "dotclear-(.*)",
+	"DirectoryExcludeRegex": "(core|plugins|cache|db|build-tools|var|debian|bin|inc|locales|unit-tests|features|travis)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "e107",
+	"VersionDirectoryRegex": "e107-(.*)",
+	"DirectoryExcludeRegex": "(e107_admin|e107_files|e107_handlers|e107_images|e107_languages|e107_plugins|features|travis)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "elgg",
+	"VersionDirectoryRegex": "elgg-(.*)",
+	"DirectoryExcludeRegex": "(elgg-config|mod|bin|composer|container-interop|install|doctrine|imagine|ircmaxell|league|michelf|misd|mrclay|psr|symfony|tedivm|zendframework|.scripts|.tx|_graphics|views)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|png|gif|ico|js|html|ttf|woff|woff2)$).)*$"
+},
+{
+	"Name": "familyconnections",
+	"VersionDirectoryRegex": "FamilyConnections-(.*)",
+	"DirectoryExcludeRegex": "(admin|dev|gallery|inc|language|gallery|log|logs|test)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "fluxbb",
+	"VersionDirectoryRegex": "fluxbb-(.*)",
+	"DirectoryExcludeRegex": "(include|plugin)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "formtools",
+	"VersionDirectoryRegex": "FormTools-(.*)",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "frontaccounting",
+	"VersionDirectoryRegex": "FrontAccounting-(.*)",
+	"DirectoryExcludeRegex": "(access|admin|applications|company|dimensions|fixed_assets|gl|includes|install|inventory|lang|manufacturing|modules|purchasing|reporting|sales|sql|taxes|tmp)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "gibbonedu",
+	"VersionDirectoryRegex": "gibbonedu-(.*)",
+	"DirectoryExcludeRegex": "(lib|installer|modules|i18n|cli|src|tests)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "espocrm",
+	"VersionDirectoryRegex": "EspoCRM-(.*)",
+	"DirectoryExcludeRegex": "(api|application|custom|data|install|tests|less|portal|vendor)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2)$).)*$"
+},
+
+{
+	"Name": "hesk",
+	"VersionDirectoryRegex": "Hesk-(.*)",
+	"DirectoryExcludeRegex": "(admin|app|inc|install|language)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "limesurvey",
+	"VersionDirectoryRegex": "limesurvey-(.*)",
+	"DirectoryExcludeRegex": "(admin|application|demosurveys|framework|sql|locale|plugins|styles|third_party|upload)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "mibewmessenger",
+	"VersionDirectoryRegex": "MibewMessenger-(.*)",
+	"DirectoryExcludeRegex": "(install|libs|operator|view|cache|configs|files|scripts|tests|config|plugins|files|vendor)$",
+    "FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "modx",
+	"VersionDirectoryRegex": "ModX-(.*)",
+	"DirectoryExcludeRegex": "(data|resolvers|Tests|connectors|core|manager|setup|.github)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md)$).)*$"
+},
+{
+	"Name": "moodle",
+	"VersionDirectoryRegex": "Moodle-(.*)",
+	"DirectoryExcludeRegex": "(admin|availability|auth|backup|badges|blocks|blog|cache|calendar|cohort|comment|completion|course|enrol|error|files|filter|grade|group|install|lang|lib|local|login|message|mnet|mod|my|notes|plagiarism|portfolio|question|rating|report|repository|rss|tag|theme|user|userpix|webservice)$",
+    "FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "mybb",
+	"VersionDirectoryRegex": "MyBB-(.*)",
+	"DirectoryExcludeRegex": "(admin|inc|install|uploads)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "omeka",
+	"VersionDirectoryRegex": "omeka-(.*)",
+	"DirectoryExcludeRegex": "(admin|application|plugin|common|exhibit-builder|items|install)$",
+	"FileExcludeRegex":"^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "opencart",
+	"VersionDirectoryRegex": "opencart-(.*)",
+	"DirectoryExcludeRegex": "(system|install|catalog)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "osclass",
+	"VersionDirectoryRegex": "Osclass-(.*)",
+	"DirectoryExcludeRegex": "(ajax|gui|modern|downloads|languages|plugins|uploads|htmlpurifier|libcurlemu|osclass|pclzip|php-gettext|phpmailer)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "osticket",
+	"VersionDirectoryRegex": "osTicket-(.*)",
+	"DirectoryExcludeRegex": "(api|apps|include|kb|pages|cli|inc|scripts|test|tests)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "phpfusion",
+	"VersionDirectoryRegex": "Phpfusion-(.*)",
+	"DirectoryExcludeRegex": "(db_backups|forum|includes|infusions|locale|ftp_upload|downloads|upgrade|widgets|themes)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "phorum",
+	"VersionDirectoryRegex": "Phorum-(.*)",
+	"DirectoryExcludeRegex": "(include|lang|posting|mods|portable|scripts|tests)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "phpaddressbook",
+	"VersionDirectoryRegex": "PhpAddressBook-(.*)",
+	"DirectoryExcludeRegex": "(_sql_upgrades|_sql_utilities|config|include|register|translations|z-push)$",
+	"FileExcludeRegex": "^((?!(\\.css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2s|md|eot)$).)*$"
+},
+{
+	"Name": "pmwiki",
+	"VersionDirectoryRegex": "pmwiki-(.*)",
+	"DirectoryExcludeRegex": "(cookbook|local|css|scripts|wikilib.d)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "projectsend",
+	"VersionDirectoryRegex": "ProjectSend-(.*)",
+	"DirectoryExcludeRegex": "(emails|includes|install|lang|my_files|upload|google)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "podcastgenerator",
+	"VersionDirectoryRegex": "PodcastGenerator-(.*)",
+	"DirectoryExcludeRegex": "(components|core|setup)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "question2answer",
+	"VersionDirectoryRegex": "question2answer-(.*)",
+	"DirectoryExcludeRegex": "(qa-external-example|qa-include|qa-lang|qa-plugin)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "rukovoditel",
+	"VersionDirectoryRegex": "rukovoditel-(.*)",
+	"DirectoryExcludeRegex": "(api|backups|config|includes|install|modules|plugins|uploads|cron|tmp)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "seopanel",
+	"VersionDirectoryRegex": "SeoPanel-(.*)",
+	"DirectoryExcludeRegex": "(config|controllers|includes|data|libs|plugins|tmp)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "serendipity",
+	"VersionDirectoryRegex": "serendipity-(.*)",
+	"DirectoryExcludeRegex": "(bundled-libs|deployment|docs|include|lang|plugins|sql|templates|templates_c|uploads)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+
+{
+	"Name": "tcexam",
+	"VersionDirectoryRegex": "TcExam-(.*)",
+	"DirectoryExcludeRegex": "(admin|lang|install|code|config.default|log|shared|jscript)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "phplist",
+	"VersionDirectoryRegex": "phpList-(.*)",
+	"DirectoryExcludeRegex": "(config|texts)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "weberp",
+	"VersionDirectoryRegex": "WebERP-(.*)",
+	"DirectoryExcludeRegex": "(api|Classes|includes|install|locale|reportwriter|sql|xmlrpc)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "xoops",
+	"VersionDirectoryRegex": "xoops-(.*)",
+	"DirectoryExcludeRegex": "(extras|upgrade|class|cache|Frameworks|include|install|kernel|language|modules|uploads|xoops_data|xoops_lib)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "yourls",
+	"VersionDirectoryRegex": "yourls-(.*)",
+	"DirectoryExcludeRegex": "(admin|includes|pages|users)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "zencart",
+	"VersionDirectoryRegex": "zencart-(.*)",
+	"DirectoryExcludeRegex": "(admin|cache|docs|download|editors|emails|extras|includes|not_for_release|log|zc_install|pub)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "vanillaforums",
+	"VersionDirectoryRegex": "VanillaForums-(.*)",
+	"DirectoryExcludeRegex": "(applications|emoji|build|js|cache|themes|Flimeconf|library|locales|plugins|uploads)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "webid",
+	"VersionDirectoryRegex": "WeBid-(.*)",
+	"DirectoryExcludeRegex": "(admin|cache|includes|install|language|themes|uploaded)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "yetiforcecrm",
+	"VersionDirectoryRegex": "YetiForceCRM-(.*)",
+	"DirectoryExcludeRegex": "(api|backup|cache|config|cron|data|include|includes|install|languages|layouts|libraries|log|modules|session|storage|user_privileges|vtlib|vendor|modules|.github)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "zenphoto",
+	"VersionDirectoryRegex": "zenphoto-(.*)",
+	"DirectoryExcludeRegex": "(albums|cache|plugins|uploaded|themes|zp-data)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "piwigo",
+	"VersionDirectoryRegex": "piwigo-(.*)",
+	"DirectoryExcludeRegex": "(admin|galleries|include|install|local|template-extension|tools|upload|plugins)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "zikula",
+	"VersionDirectoryRegex": "zikula-(.*)",
+	"DirectoryExcludeRegex": "(app|bin|config|docs|install|lib|locale|modules|plugins|system|userdata|ztemp|var|vendor|images)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "zurmo",
+	"VersionDirectoryRegex": "Zurmo-(.*)",
+	"DirectoryExcludeRegex": "(redbean|yii|documentation|less)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "owncloud",
+	"VersionDirectoryRegex": "OwnCloud-(.*)",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|eot)$).)*$"
+},
+{
+
+	"Name": "roundcube",
+	"VersionDirectoryRegex": "Roundcube-(.*)",
+	"DirectoryExcludeRegex": "(.tx|bin|config|logs|plugins|program|installer|SQL|temp|tests)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "phpmyfaq",
+	"VersionDirectoryRegex": "PhpMyFAQ-(.*)",
+	"DirectoryExcludeRegex": "(admin|config|feed|inc|install|lang|multisite|services)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "b2evolution",
+	"VersionDirectoryRegex": "b2evolution-(.*)",
+	"DirectoryExcludeRegex": "(plugins|install|inc|_cache|_test|_transifex)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "clipbucket",
+	"VersionDirectoryRegex": "ClipBucket-(.*)",
+	"DirectoryExcludeRegex": "(actions|api|cache|cb_install|files|includes|plugins|ajax)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "contao",
+	"VersionDirectoryRegex": "contao-(.*)",
+	"DirectoryExcludeRegex": "(build|lib|modules|plugins|scripts|tests|phar_installer)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+	"Name": "dolibarr",
+	"VersionDirectoryRegex": "dolibarr-(.*)",
+	"DirectoryExcludeRegex": "(webservices|user|societe|public|projet|product|paybox|margin|mailmanspip|livraison|langs|install|includes|imports|holiday|ftp|fourn|fichinter|externalsite|exports|expedition|ecm|cron|core|contrat|contact|compta|commissions|commande|comm|categories|boutique|bookmarks|asterisk|admin|adherents|accountancy)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+	"Name": "dolphin",
+	"VersionDirectoryRegex": "dolphin-(.*)",
+	"DirectoryExcludeRegex": "(flash|inc|install|langs|media|modules|periodic|upgrade)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+
+	"Name": "magento",
+	"VersionDirectoryRegex": "Magento-(.*)",
+	"DirectoryExcludeRegex": "(.github|dev|generated|phpserver)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+
+{
+
+	"Name": "ph7cms",
+	"VersionDirectoryRegex": "Ph7CMS-(.*)",
+	"DirectoryExcludeRegex": "(_install|_protected|_repository|data)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+
+	"Name": "qdpm",
+	"VersionDirectoryRegex": "qdPM-(.*)",
+	"DirectoryExcludeRegex": "(backups|batch|core|install|uploads)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+
+	"Name": "reviveadserver",
+	"VersionDirectoryRegex": "ReviveAdserver-(.*)",
+	"DirectoryExcludeRegex": "(.github|etc|maintenance|plugins|plugins_repo|scripts|tutorials|tutorials|var)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+
+	"Name": "typo3cms",
+	"VersionDirectoryRegex": "typo3CMS-(.*)",
+	"DirectoryExcludeRegex": "(install|vendor)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+},
+{
+
+	"Name": "vtiger",
+	"VersionDirectoryRegex": "Vtiger-(.*)",
+	"DirectoryExcludeRegex": "(data|include|includes|languages|layouts|libraries|logs|migrate|modules|packages|soap|test)$",
+	"FileExcludeRegex": "^((?!\\.(css|jpg|jpeg|svg|txt|png|gif|ico|js|html|ttf|woff|woff2|md|eot)$).)*$"
+}
+
+
+]

@@ -1,0 +1,69 @@
+@using System;
+@using MSL.Common.Web;
+@using MSL.Common.Text.Encoding;
+@using MSL.Common.Extensions;
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Reporting
+@using MSL.Core.Resources
+@{
+    // Short access to some object
+    var vuln = Model.Vulnerability;
+    var absoluteUri = Model.Vulnerability.Response.ResponseUri.AbsoluteUri;
+    var attackParameter = Model.AttackParameter;
+	var attackParameterValue = attackParameter.Value ?? string.Empty;
+}[code]
+<b>@Literals.Url:</b> <a href="@absoluteUri">@Raw(Decode.Url(absoluteUri))</a><br />
+<b>@Literals.Name:</b> @vuln.Title<br />
+<b>@Literals.Severity:</b> @ReportingUtility.GetLocalizedSeverity(vuln.Severity)<br />
+@if (vuln.IsConfirmed)
+{
+    <b>@Literals.Confirmed:</b>@vuln.IsConfirmed <br />
+}
+@if (VulnerabilityExtensions.ShouldDisplayCertainty(vuln))
+{
+    <b>@Literals.Certainty:</b>@vuln.Certainty<text>%</text> <br />
+}
+<br />
+@if (!string.IsNullOrEmpty(attackParameterValue))
+{
+    <text>
+        <b>@Literals.ParameterName:</b> @attackParameter.Name<br />
+        <b>@Literals.ParameterType:</b> @attackParameter.TypeName<br />
+        <b>@Literals.Payload:</b> @Decode.Url(HttpUtility.EncodeNullByte(attackParameterValue))
+    </text>
+}
+
+@if(!CollectionExtensions.IsNullOrEmpty(vuln.CustomFields))
+{
+	<text><br/></text>
+}
+
+@foreach (var customFieldPair in vuln.CustomFields)
+{
+	<br/>
+	<text>
+	<b>@ReportingUtility.GetLocalizedCustomFieldName(customFieldPair.Key):</b>
+	@if (customFieldPair.Value.HasMultipleValues)
+    {
+        foreach (var value in customFieldPair.Value.Values)
+        {
+            <text>@Raw(ReportingUtility.GetLocalizedCustomFieldName(value))</text>
+        }
+    }
+	else if (!string.IsNullOrEmpty(customFieldPair.Value.FormatParameter))
+	{
+		<text>@string.Format(ReportingUtility.GetLocalizedCustomFieldName(customFieldPair.Value.Value), customFieldPair.Value.FormatParameter))</text>
+	}
+	else
+	{
+		<text>@ReportingUtility.GetLocalizedCustomFieldName(customFieldPair.Value.Value)</text>
+	}	
+	</text>
+}
+@if (attackParameterValue.Contains("\0"))
+{
+<text><br/></text>
+<text>@Literals.SendToAction_NullByteInformation</text>
+}
+[/code]
+

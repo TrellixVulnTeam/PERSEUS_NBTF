@@ -1,0 +1,11 @@
+colorama
+tabulate
+androguard
+pluginbase
+requests
+chardet
+cryptography
+markupsafe
+termcolor
+pyfiglet
+jsbeautifier

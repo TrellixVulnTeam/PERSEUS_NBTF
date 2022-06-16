@@ -1,0 +1,40 @@
+Netsparker IS NOT licensed under the following licence. For Netsparker licence refer to  "Licence.rtf" file.
+
+.NET Core Libraries (CoreFX) is licensed under MIT.
+.NET Reference Source is licensed under MIT.
+Microsoft.IO.RecyclableMemoryStream is licensed under MIT.
+PublicSuffix is licensed under MIT.
+TestSSLServer code by Thomas Pornin <pornin@bolet.org> is licensed under MIT.
+AaltoTLS code Copyright (C) 2010-2011  Aalto University is licensed under MIT/X11.
+AutoRest is licensed under MIT.
+DNS is licensed under MIT.
+Mono.Security is licensed under MIT.
+Be.HexEditor is licensed under MIT.
+Task Scheduler Managed Wrapper is licensed under MIT.
+Shaman.ValueString  is licensed under MIT.
+Titanium Web Proxy is licensed under MIT.
+YamlDotNet is licensed under MIT.
+DotNetCSS is licensed under MIT.
+HTMLAgilityPack is licensed under MIT.
+Newtonsoft.Json is licensed under MIT.
+optimal-select is licensed under MIT.
+JetBrains ReSharper Annotations is licensed under MIT.
+OTP.Net is licensed under MIT.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

@@ -1,0 +1,57 @@
+@using System;
+@using System.Text;
+@using MSL.Common.Web;
+@using MSL.Common.Extensions;
+@using MSL.Common.Text.Encoding;
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Reporting
+@using MSL.Core.Resources
+@{
+	var vuln = Model.Vulnerability;
+	var absoluteUri = vuln.Response.ResponseUri.AbsoluteUri;
+	var attackParameter = Model.AttackParameter;
+	var attackParameterValue = attackParameter.Value ?? string.Empty;
+}
+@Literals.Url: @HttpUtility.EncodeNullByte(absoluteUri)
+@Literals.Name: @vuln.Title
+@Literals.Severity: @ReportingUtility.GetLocalizedSeverity(vuln.Severity)
+@if (vuln.IsConfirmed)
+{
+@:@Literals.Confirmed: @vuln.IsConfirmed
+}
+@if (VulnerabilityExtensions.ShouldDisplayCertainty(vuln))
+{
+@:@Literals.Certainty: @vuln.Certainty%
+}
+@if (!string.IsNullOrEmpty(attackParameterValue))
+{
+@:
+@:@Literals.ParameterName: @attackParameter.Name
+@:@Literals.ParameterType: @attackParameter.TypeName
+@:@Literals.Payload: @Raw(HttpUtility.EncodeNullByte(attackParameterValue))
+}
+@if(!CollectionExtensions.IsNullOrEmpty(vuln.CustomFields))
+{
+@:
+}
+@foreach (var customFieldPair in vuln.CustomFields)
+{
+	var key = ReportingUtility.GetLocalizedCustomFieldName(customFieldPair.Key);
+	if (customFieldPair.Value.HasMultipleValues)
+	{
+@:@key: @string.Join(", ", customFieldPair.Value.Values)
+	}
+	else if (!string.IsNullOrEmpty(customFieldPair.Value.FormatParameter))
+	{
+@:@key: @string.Format(ReportingUtility.GetLocalizedCustomFieldName(customFieldPair.Value.Value), customFieldPair.Value.FormatParameter)
+	}
+	else
+	{
+@:@key: @Raw(ReportingUtility.GetLocalizedCustomFieldName(customFieldPair.Value.Value))
+	}
+}
+@if (attackParameterValue.Contains("\0"))
+{
+@:
+@:@Literals.SendToAction_NullByteInformation
+}

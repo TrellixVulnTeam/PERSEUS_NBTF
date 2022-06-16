@@ -1,0 +1,289 @@
+@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using System.IO
+@using System.Linq
+@using System.Text
+@using MSL.Common.Extensions
+@using MSL.Common.Text
+@using MSL.Core
+@using MSL.Core.Configuration
+@using MSL.Core.Process.Reporting
+@using MSL.Core.Process.Reporting.SessionComparison
+@using MSL.Core.Resources
+@using MSL.Core.Utilities
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+	const int GraphWidth = 900;
+	const int GraphHeight = 350;
+	const string BarChartFileName = "SeverityBarChart.png";
+	const string LineChartFileName = "SeverityLineChart.png";
+
+	var shortDatePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+	var longTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+
+	// User-Friendly comparison statuses
+	var friendlyStatus = new Dictionary<VulnerabilityComparisonStatus, string>();
+	friendlyStatus.Add(VulnerabilityComparisonStatus.None, "-");
+	friendlyStatus.Add(VulnerabilityComparisonStatus.New, Literals.ComparisonReportTemplate_New);
+	friendlyStatus.Add(VulnerabilityComparisonStatus.NotExist, Literals.ComparisonReportTemplate_NotExist);
+	friendlyStatus.Add(VulnerabilityComparisonStatus.Fixed, Literals.ComparisonReportTemplate_Fixed);
+	friendlyStatus.Add(VulnerabilityComparisonStatus.NotFixed, Literals.ComparisonReportTemplate_NotFixed);
+	friendlyStatus.Add(VulnerabilityComparisonStatus.Revived, Literals.ComparisonReportTemplate_Revived);
+
+	var csss = new StringBuilder();
+	var cssImages = ReportingUtility.GetImagesAsCss("logo.gif", "new.png", "notexist.png", "notfixed.png", "revived.png");
+
+	csss.AppendLine(cssImages);
+
+    VulnerabilityComparisonResult comparisonResult = null;
+    var barChartUrl = string.Empty;
+    var lineChartUrl = string.Empty;
+    var errorMessage = string.Empty;
+
+    var sessions = IoC.Container.App.GetComparisonSessions(Model);
+
+    if (sessions != null && sessions.Count > 0)
+    {
+        try
+        {
+            comparisonResult = ReportingUtility.CompareSessions(sessions);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+		csss.AppendLine(ReportingUtility.CreateSessionComparisonSeverityBarChartAsCss(sessions, GraphWidth, GraphHeight, "img-barchart"));
+
+
+		csss.AppendLine(ReportingUtility.CreateSessionComparisonSeverityLineChartAsCss(sessions, GraphWidth, GraphHeight, "img-linechart"));
+	}
+	else
+	{
+		// Dialog cancelled or no session selected.
+		throw new ReportingCancelledException();
+	}
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="@ReportingUtility.HtmlLangAtributeValue">
+<head>
+	<title>@Literals.ComparisonReportTemplate_Title</title>
+	<style type="text/css">
+		@Raw(csss.ToString())
+		body {
+			margin: 30px;
+		}
+
+		p, div, td, h1, h2, h3 {
+			font-family: Verdana, Arial, sans-serif;
+			font-size: 12px;
+		}
+
+		#netsparker {
+			margin-bottom: 20px;
+		}
+
+		h1, h2, h3, h4 {
+			font-size: 32px;
+			font-family: Trebuchet MS, Tahoma, sans-serif;
+		}
+
+		h1 {
+			border-bottom: 6px solid #CCC;
+			display: inline;
+		}
+
+		.allcaps {
+			text-transform: uppercase;
+		}
+
+		.graph {
+			margin: 10px 0;
+		}
+
+		table {
+			border: 0;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+		.summary-table {
+			margin-top: 15px;
+			table-layout: fixed;
+			width: 100%;
+		}
+
+		.summary-table th {
+			border: 1px solid #CCC;
+			background-color: #F7F7F7;
+			padding: 5px 10px;
+			text-align: left;
+		}
+
+		.summary-table th.session {
+			text-align: center;
+		}
+
+		.summary-table td {
+			border: 1px solid #CCC;
+			padding: 5px 10px;
+			word-wrap: break-word;
+		}
+
+		/* Severities */
+		.bestpractice
+		{
+		    background-color: #417BB6;
+		}
+		.information {
+			background-color: #3399FF;
+		}
+
+		.medium {
+			background-color: #FF9900;
+		}
+
+		.critical {
+			background-color: #F00;
+		}
+
+		.high, .csNew {
+			background-color: #FF491C;
+		}
+
+		.blockconfirmed {
+			background-color: #C00;
+		}
+
+		.low {
+			background-color: #F3D70C;
+		}
+
+		/*
+			Comparison Statuses
+		*/
+		.csNew, .csNotFixed {
+			background-color: #FF997F;
+		}
+
+		.csNotExist {
+			background-color: #E5E5E5;
+		}
+
+		.csFixed {
+			background-color: #CCE599;
+		}
+
+		.csRevived {
+			background-color: #FF6640;
+		}
+
+		td img {
+			vertical-align: text-top;
+		}
+	</style>
+</head>
+<body>
+	<div style="width: 100%">
+		@{
+			if (comparisonResult == null)
+			{
+			    @Literals.ComparisonReportTemplate_NothingToReport 
+			    if (sessions != null && sessions.Count > 0)
+			    {
+			        @errorMessage
+			    }
+		    }
+			else
+			{
+			<div style="text-align: center;">
+				<span class="img-logo"></span>
+				<div class="graph">
+					<span class="img-barchart"/></div>
+				<div class="graph">
+					<span class="img-linechart"/></div>
+			</div>
+			<!-- Vulnerability Comparison Table -->
+			<h1 class="allcaps" style="page-break-before: always;">@Literals.ComparisonReportTemplate_VulnerabilityComparison</h1>
+			<table class="summary-table">
+			  <colgroup>
+			    <col>
+			    <col>
+			    <col style="width: 80px">
+			  </colgroup>
+			  <colgroup>
+			    <col style="width: 36px">
+			    <col>
+			  </colgroup>
+			  <colgroup>
+					@for (var i = 0; i < comparisonResult.SessionsOrdered.Count; ++i)
+	 {
+			    <col style="width: 120px">
+	 }
+			  </colgroup>
+				<tr>
+					<th>@comparisonResult.DistinctHostNames</th>
+					<th>@Literals.ReportTemplate_Parameter</th>
+					<th>@Literals.ReportTemplate_Method</th>
+					<th colspan="2">@Literals.ReportTemplate_Vulnerability</th>
+					@foreach (var comparisonSession in comparisonResult.SessionsOrdered)
+	 {
+		 <th class="session">@comparisonSession.StartTime.ToString(shortDatePattern, CultureInfo.CurrentCulture)
+					<br />
+			 @comparisonSession.StartTime.FormatWithTimeZone(longTimePattern)
+		 </th>
+	 }
+				</tr>
+				@{
+	 // Sort vulnerabilities based on their severity, Type, confirmation and certainty
+	 var comparisonGroups = from VulnerabilityComparisonRow row in comparisonResult.Rows
+							orderby row.UriAbsolutePath, row.Severity descending, row.Order ascending, row.Type ascending, row.IsConfirmed descending, row.Certainty descending
+							where row.IsVisible
+							group row by row.UriAbsolutePath;
+
+	 foreach (var group in comparisonGroups)
+	 {
+		 var url = Encode(group.Key).ToString();
+
+		 foreach (var comparisonRow in group)
+		 {
+					<tr>
+						@if (!string.IsNullOrEmpty(url))
+	  {
+							<td rowspan="@group.Count()">@url</td>
+	  }
+						@if (comparisonRow.Vulnerability.HasVisibleAttackParameter)
+	  {
+							<td>@comparisonRow.Vulnerability.AttackParameterName</td>
+	  }
+	  else
+	  {
+							<td></td>
+	  }
+						<td>@comparisonRow.Vulnerability.HttpMethod</td>
+						<td class="@comparisonRow.Vulnerability.Severity.ToString().ToLowerInvariant()">
+							@if (comparisonRow.IsConfirmed)
+	   {
+								<span class="img-critical" />
+	   }
+						</td>
+						<td>@comparisonRow.Vulnerability.Title</td>
+						@foreach (var comparisonStatus in comparisonRow.Statuses)
+	  {
+		  <td class="@("cs" + comparisonStatus)">
+	  	<span class="img-@comparisonStatus.ToString().ToLowerInvariant()"></span>
+			@friendlyStatus[comparisonStatus]
+		</td>
+	  }
+					</tr>
+	  url = string.Empty;
+		 }
+	 }
+				}
+			</table>
+			}
+		}
+	</div>
+</body>
+</html>

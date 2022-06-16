@@ -1,0 +1,212 @@
+@using System
+@using System.Collections.Generic
+@using System.IO
+@using System.Linq
+@using MSL.Common.Text;
+@using MSL.Core.Configuration
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Reporting;
+@using MSL.Core.Utilities
+@using Newtonsoft.Json
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+    // Filter the vuln list and cache it
+    var vulnList = ReportingUtility.GetReportableVulnerabilities(Model.Vulnerabilities, Model).ToArray();
+
+    // Sort vulnerabilities based on their severity, Type, confirmation and certainty
+    var sortedVulns = (from Vulnerability v in vulnList
+                       orderby v.Severity descending, v.Order ascending, v.Type ascending, v.IsConfirmed descending, v.Certainty descending
+                       select v).ToList();
+
+    var scanId = ScanSettings.Instance.ScanManager.SsrfSettings.ScanId;
+    var targetUrl = Model.ScanProfile.TargetUrl;
+    var duration = ScanSettings.Instance.ElapsedTime;
+    var startTime = ScanSettings.Instance.StartTime.ToLocalTime().FormatWithTimeZone();
+
+    var stringWriter = new StringWriter();
+
+    using (JsonWriter writer = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented, IndentChar = '\t', Indentation = 1 })
+    {
+        writer.WriteStartObject();
+        writer.WritePropertyName("Generated");
+        writer.WriteValue(DateTime.Now.ToLocalTime().FormatWithTimeZone());
+
+        writer.WritePropertyName("Target");
+        writer.WriteStartObject();
+        writer.WritePropertyName("ScanId");
+        writer.WriteValue(scanId);
+        writer.WritePropertyName("Url");
+        writer.WriteValue(targetUrl);
+        writer.WritePropertyName("Initiated");
+        writer.WriteValue(startTime);
+        writer.WritePropertyName("Duration");
+        writer.WriteValue(duration);
+        writer.WriteEndObject();
+
+        writer.WritePropertyName("Vulnerabilities");
+        writer.WriteStartArray();
+
+        foreach (var vuln in sortedVulns)
+        {
+            foreach (Vulnerability variation in ReportingUtility.GetReportableVulnerabilities(vuln, Model))
+            {
+                writer.WriteStartObject();
+                writer.WritePropertyName("Url");
+                writer.WriteValue(variation.UriManager.Uri.AbsoluteUri);
+                writer.WritePropertyName("Type");
+                writer.WriteValue(variation.Type.ToString());
+                writer.WritePropertyName("Name");
+                writer.WriteValue(variation.Title);
+                writer.WritePropertyName("Severity");
+                writer.WriteValue(variation.Severity.ToString());
+                writer.WritePropertyName("Certainty");
+                writer.WriteValue(variation.Certainty);
+                writer.WritePropertyName("Confirmed");
+                writer.WriteValue(variation.IsConfirmed);
+
+                writer.WritePropertyName("Classification");
+
+                writer.WriteStartObject();
+
+                writer.WritePropertyName("Owasp");
+                writer.WriteValue(variation.Classification.Owasp2013);
+                writer.WritePropertyName("Owasp2017");
+                writer.WriteValue(variation.Classification.Owasp2017);
+                writer.WritePropertyName("Wasc");
+                writer.WriteValue(variation.Classification.Wasc);
+                writer.WritePropertyName("Cwe");
+                writer.WriteValue(variation.Classification.Cwe);
+                writer.WritePropertyName("Capec");
+                writer.WriteValue(variation.Classification.Capec);
+                writer.WritePropertyName("Pci32");
+                writer.WriteValue(variation.Classification.Pci32);
+                writer.WritePropertyName("Hipaa");
+                writer.WriteValue(variation.Classification.Hipaa);
+
+                writer.WriteEndObject();
+
+                writer.WritePropertyName("HttpRequest");
+                writer.WriteStartObject();
+                writer.WritePropertyName("Method");
+                writer.WriteValue(variation.UriManager.HttpMethod);
+                writer.WritePropertyName("Content");
+                writer.WriteValue(variation.RawRequest);
+                writer.WritePropertyName("Parameters");
+                writer.WriteStartArray();
+
+                if (variation.UriManager.Parameters.Count == 0)
+                {
+                    writer.WriteRaw(" ");
+                }
+                else
+                {
+                    foreach (var param in variation.UriManager.Parameters)
+                    {
+                        writer.WriteStartObject();
+                        writer.WritePropertyName("Name");
+                        writer.WriteValue(param.Name);
+                        writer.WritePropertyName("Type");
+                        writer.WriteValue(param.Type.ToString());
+                        writer.WritePropertyName("Value");
+                        writer.WriteValue(param.Value);
+                        writer.WritePropertyName("Vulnerable");
+                        writer.WriteValue(param.Name == variation.UriManager.AttackParameter.Name);
+                        writer.WriteEndObject();
+                    }
+                }
+
+                writer.WriteEndArray();
+                writer.WriteEndObject();
+
+                writer.WritePropertyName("HttpResponse");
+                writer.WriteStartObject();
+                writer.WritePropertyName("StatusCode");
+                writer.WriteValue((int)variation.StatusCode);
+                writer.WritePropertyName("Duration");
+                writer.WriteValue(variation.ResponseTime);
+                writer.WritePropertyName("Content");
+                writer.WriteValue(variation.RawResponse);
+                writer.WriteEndObject();
+
+
+                writer.WritePropertyName("ExtraInformation");
+                writer.WriteStartArray();
+
+                if (variation.CustomFields.Count == 0)
+                {
+                    writer.WriteRaw(" ");
+                }
+                else
+                {
+                    foreach (var field in variation.CustomFields)
+                    {
+                        writer.WriteStartObject();
+                        writer.WritePropertyName("Name");
+                        writer.WriteValue(ReportingUtility.GetLocalizedCustomFieldName(field.Key));
+                        writer.WritePropertyName("Value");
+                        if (field.Value.Values != null)
+                        {
+                            writer.WriteValue(string.Join(", ",
+                                field.Value.Values.Select(value => ReportingUtility.GetLocalizedCustomFieldName(value))));
+                        }
+                        else
+                        {
+                            writer.WriteValue(ReportingUtility.GetLocalizedValueWithFormatParameter(field.Value.Value, field.Value.FormatParameter));
+                        }
+                        writer.WriteEndObject();
+                    }
+                }
+
+                writer.WriteEndArray();
+
+                writer.WritePropertyName("KnownVulnerabilities");
+                writer.WriteStartArray();
+
+                if (variation.VersionVulnerabilities.Count == 0)
+                {
+                    writer.WriteRaw(" ");
+                }
+                else
+                {
+                    foreach (var knownVuln in variation.VersionVulnerabilities)
+                    {
+                        writer.WriteStartObject();
+                        writer.WritePropertyName("Title");
+                        writer.WriteValue(knownVuln.Title);
+                        writer.WritePropertyName("Severity");
+                        writer.WriteValue(knownVuln.Severity.ToString());
+                        writer.WriteEndObject();
+                    }
+                }
+
+                writer.WriteEndArray();
+
+                var sections = variation.GetTemplateSections();
+
+                writer.WritePropertyName("Description");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.Summary]);
+                writer.WritePropertyName("Impact");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.Impact]);
+                writer.WritePropertyName("RemedialActions");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.ActionsToTake]);
+                writer.WritePropertyName("ExploitationSkills");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.RequiredSkillsForExploitation]);
+                writer.WritePropertyName("RemedialProcedure");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.Remedy]);
+                writer.WritePropertyName("RemedyReferences");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.RemedyReferences]);
+                writer.WritePropertyName("ExternalReferences");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.ExternalReferences]);
+                writer.WritePropertyName("ProofOfConcept");
+                writer.WriteValue(sections[VulnerabilityTemplateSection.ProofOfConcept]);
+
+                writer.WriteEndObject();
+            }
+        }
+
+        writer.WriteEndArray();
+        writer.WriteEndObject();
+    }
+
+<text>@Raw(stringWriter.ToString())</text>
+}

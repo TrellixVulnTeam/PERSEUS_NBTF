@@ -1,0 +1,202 @@
+[type=checkbox]:checked, [type=checkbox]:not(:checked) {
+    position: absolute;
+    left: -9999px
+}
+
+    [type=checkbox]:checked + label, [type=checkbox]:not(:checked) + label {
+        position: relative;
+        padding-left: 42px;
+        cursor: pointer
+    }
+
+        [type=checkbox]:checked + label:after, [type=checkbox]:checked + label:before, [type=checkbox]:not(:checked) + label:after, [type=checkbox]:not(:checked) + label:before {
+            content: '';
+            position: absolute
+        }
+
+        [type=checkbox]:checked + label:before, [type=checkbox]:not(:checked) + label:before {
+            left: 0;
+            top: 3px;
+            width: 35px;
+            height: 20px;
+            background: #DDD;
+            border-radius: 15px;
+            transition: background-color .2s
+        }
+
+        [type=checkbox]:checked + label:after, [type=checkbox]:not(:checked) + label:after {
+            width: 10px;
+            height: 10px;
+            transition: all .2s;
+            border-radius: 50%;
+            background: #7F8C9A;
+            top: 8px;
+            left: 5px
+        }
+
+        [type=checkbox]:checked + label:before {
+            background: #ccc
+        }
+
+        [type=checkbox]:checked + label:after {
+            background: #c00;
+            top: 8px;
+            left: 20px
+        }
+
+        [type=checkbox]:checked + label .ui, [type=checkbox]:checked + label .ui:after, [type=checkbox]:not(:checked) + label .ui:before {
+            position: absolute;
+            left: 6px;
+            width: 65px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 22px;
+            transition: all .2s
+        }
+
+        [type=checkbox]:not(:checked) + label .ui:before {
+            content: "";
+            left: 32px
+        }
+
+        [type=checkbox]:checked + label .ui:after {
+            content: "";
+            color: #39D2B4
+        }
+
+[type=checkbox]:focus + label:before {
+    border: 1px dashed #777;
+    box-sizing: border-box;
+    margin-top: -1px
+}
+
+input[type=text] {
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 16px;
+    box-shadow: none;
+    border: 1px solid rgba(119, 119, 119, 0.5);
+    margin-left: 10px;
+}
+
+    input[type=text]:focus {
+        outline: 0
+    }
+
+.metricButton {
+    width: 100% !important;
+    background-color: #417bb6 !important;
+    color: white !important;
+    border: 0;
+    padding: 5px 10px 5px 10px;
+    text-decoration: none;
+    width: 100%;
+    max-width: 150px;
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: x-small;
+    margin-left: 10px;
+}
+
+    .metricButton:hover, .metricButton:focus, .metricButton:active {
+        background-color: #08294a !important;
+        cursor: pointer;
+    }
+
+.select {
+    display:flex;
+    flex-direction: column;
+    position:relative;
+    width:350px;
+    height:40px;
+}
+
+.option {
+    padding: 0 10px 0 10px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    background: #E5E5E5;
+    border-top: rgba(119, 119, 119, 0.5) solid 1px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    pointer-events: none;
+    order: 2;
+    z-index: 1;
+    transition: background .4s ease-in-out;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.option-right {
+    width: 510px;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.option-right-box {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 6px 0;
+    font-size: 18px;
+    float: right;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.option-right-box span {
+    padding-left: 3px;
+}
+
+.select:focus .option {
+    position:relative;
+    pointer-events:all;
+}
+
+input[type=radio] {
+    opacity: 0;
+    position: absolute;
+    left: -99999px;
+}
+
+    input[type=radio]:checked + label {
+        order: 1;
+        z-index: 2;
+        border-top: none;
+        position: relative;
+        color: white;
+    }
+ 
+input[type=radio]:checked + label:after {
+    content:'';
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid white;
+    border-bottom: 5px solid transparent;
+    position:absolute;
+    right:15px;
+    top:calc(50% - 2.5px);
+    pointer-events:none;
+    z-index:3;
+}
+
+        input[type=radio]:checked + label:before {
+            position: absolute;
+            right: 0;
+            top: 0;
+            border-left: 1px solid white;
+            height: 40px;
+            width: 40px;
+            content: '';
+            background: transparent;
+        }

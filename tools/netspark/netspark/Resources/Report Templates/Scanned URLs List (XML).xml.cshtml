@@ -1,0 +1,104 @@
+@using System
+@using System.Collections.Generic
+@using MSL.Common.Text;
+@using MSL.Common.Text.Encoding
+@using MSL.Core.Configuration
+@using MSL.Core.Entities
+@using MSL.Core.Process.Reporting;
+@inherits HelperBaseTemplate<ReportTemplateData>
+<?xml version="1.0" encoding="utf-8" ?>
+<netsparker generated="@DateTime.Now.ToString("MM/dd/yy H:mm:ss zzz")">
+	<target>
+		<url>@ReportingUtility.XmlShortEscape(Model.ScanProfile.Uri.AbsoluteUri)</url>
+		<scantime>@Convert.ToInt32(ScanSettings.Instance.ElapsedTime.TotalSeconds)</scantime>
+	</target>
+		@foreach (var link in Model.LinkPool.UniquePool)
+		{
+			var postParams = new List<string>();
+			var jsonParams = new List<string>();
+			var xmlParams = new List<string>();
+			var attackedParams = new List<string>();
+			foreach (var param in link.UriManager.Parameters)
+			{
+				var escapedParamName = ReportingUtility.XmlShortEscape(Decode.Url(param.Name));
+
+				if (param.Type == ParameterType.Post)
+				{
+					postParams.Add(escapedParamName);
+				}
+				else if (param.Type == ParameterType.Json)
+				{
+					jsonParams.Add(escapedParamName);
+				}
+				else if (param.Type == ParameterType.Xml || param.Type == ParameterType.SoapXml)
+				{
+					xmlParams.Add(escapedParamName);
+				}
+
+				if (!param.DoNotAttack)
+				{
+					attackedParams.Add(escapedParamName);
+				}
+			}
+
+			<scannedurl>
+				<url>@link.Uri.AbsoluteUri</url>
+				<method>@link.UriManager.HttpMethod</method>
+				@if (postParams.Count > 0)
+				{
+					<postparameters>
+						@foreach (var param in postParams)
+						{
+							<parameter>@param</parameter>
+						}
+					</postparameters>
+				}
+				else
+				{
+					<postparameters />
+				}
+@if (jsonParams.Count > 0)
+				{
+					<jsonparameters>
+						@foreach (var param in jsonParams)
+						{
+							<parameter>@param</parameter>
+						}
+					</jsonparameters>
+				}
+				else
+				{
+					<jsonparameters />
+				}
+@if (xmlParams.Count > 0)
+				{
+					<xmlparameters>
+						@foreach (var param in xmlParams)
+						{
+							<parameter>@param</parameter>
+						}
+					</xmlparameters>
+				}
+				else
+				{
+					<xmlparameters />
+				}
+@if (attackedParams.Count > 0)
+				{
+					<attackedparameters>
+						@foreach (var param in attackedParams)
+						{
+							<parameter>@param</parameter>
+						}
+					</attackedparameters>
+				}
+				else
+				{
+					<attackedparameters />
+				}
+				<statuscode>@((int)link.StatusCode)</statuscode>
+				<responsetime>@link.ResponseTime.ToString("0.0")</responsetime>
+				<parsingsource>@link.UriManager.ParsingSource</parsingsource>
+			</scannedurl>
+		}
+</netsparker>

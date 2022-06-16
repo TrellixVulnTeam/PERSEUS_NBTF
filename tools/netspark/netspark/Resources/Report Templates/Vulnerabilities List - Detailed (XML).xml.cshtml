@@ -1,0 +1,144 @@
+@using System
+@using System.Collections.Generic
+@using System.IO
+@using System.Linq
+@using MSL.Common.Text;
+@using MSL.Core.Configuration
+@using MSL.Core.Data.Resources
+@using MSL.Core.Entities.Cvss
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Exploitation
+@using MSL.Core.Process.Reporting;
+@using MSL.Core.Process.Reporting.Cvss
+@inherits HelperBaseTemplate<ReportTemplateData>
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet href="vulnerabilities-list.xsl" type="text/xsl" ?>
+
+<netsparker generated="@DateTime.Now.ToString()">
+	<target>
+		<url>@ReportingUtility.XmlShortEscape(Model.ScanProfile.Uri.AbsoluteUri)</url>
+		<scantime>@Convert.ToInt32(ScanSettings.Instance.ElapsedTime.TotalSeconds)</scantime>
+	</target>
+	@{
+		var reportOutput = new FileInfo(Model.ReportFilePath);
+		try
+		{
+			File.Copy(Path.Combine(ReportTemplateManager.BuiltinPath, "vulnerabilities-list.xsl"), Path.Combine(reportOutput.Directory.FullName, "vulnerabilities-list.xsl"), true);
+		}
+		catch (Exception)
+		{
+		}
+
+	    // Filter the vuln list and cache it
+        var vulnList = ReportingUtility.GetReportableVulnerabilities(Model.Vulnerabilities, Model).ToArray();
+
+        // Sort vulnerabilities based on their severity, Type, confirmation and certainty
+        var sortedVulns = from IVulnerabilityView v in vulnList
+                          orderby v.Severity descending, v.Order ascending, v.Type ascending, v.IsConfirmed descending, v.Certainty descending, v.AbsoluteUri
+                          select v;
+
+	    foreach (var vuln in sortedVulns)
+	    {
+	        var vulnerabilityTemplateSections = vuln.GetTemplateSections();
+
+	        foreach (var variation in ReportingUtility.GetReportableVulnerabilities(vuln, Model))
+	        {
+	            if (variation.Visibility != VulnerabilityVisibility.Hidden)
+	            {
+	                <vulnerability confirmed="@variation.IsConfirmed.ToString()">
+	                    <url>@ReportingUtility.XmlShortEscape(variation.AbsoluteUri)</url>
+	                    <type>@variation.Type</type>
+	                    <severity>@variation.Severity.ToString()</severity>
+	                    <certainty>@variation.Certainty</certainty>
+	                    <description><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.Summary]) ]]></description>
+	                    <impact><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.Impact]) ]]></impact>
+	                    <actionsToTake><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.ActionsToTake]) ]]></actionsToTake>
+	                    <remedy><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.Remedy]) ]]></remedy>
+	                    <requiredSkillsForExploitation><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.RequiredSkillsForExploitation]) ]]></requiredSkillsForExploitation>
+	                    <externalReferences><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.ExternalReferences]) ]]></externalReferences>
+	                    <remedyReferences><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.RemedyReferences]) ]]></remedyReferences>
+	                    <proofOfConcept><![CDATA[ @Raw(vulnerabilityTemplateSections[VulnerabilityTemplateSection.ProofOfConcept]) ]]></proofOfConcept>
+
+	                    @if (!string.IsNullOrEmpty(variation.AttackParameterName))
+	                    {
+	                        <vulnerableparametertype>@ReportingUtility.XmlShortEscape(variation.AttackParameterTypeName)</vulnerableparametertype>
+	                        <vulnerableparameter>@ReportingUtility.XmlShortEscape(variation.AttackParameterName)</vulnerableparameter>
+	                        <vulnerableparametervalue>@ReportingUtility.XmlShortEscape(variation.AttackParameterValue)</vulnerableparametervalue>
+	                    }
+	                    <rawrequest>@Raw(ReportingUtility.XmlEscapeCharacterData(variation.GetRawRequest()))</rawrequest>
+	                    <rawresponse>@Raw(ReportingUtility.XmlEscapeCharacterData(variation.GetFullResponse()))</rawresponse>
+	                    <extrainformation>
+	                        @foreach (var field in variation.CustomFields)
+	                        {
+	                            <info name="@field.Key">@Raw(ReportingUtility.XmlEscapeCharacterData(field.Value.HasMultipleValues ? string.Join(", ", field.Value.Values) : ReportingUtility.GetLocalizedValueWithFormatParameter(field.Value.Value, field.Value.FormatParameter)))</info>
+	                        }
+	                    </extrainformation>
+
+	                    @{
+	                        var renderer = new ProofXmlDataRenderer();
+	                        <proofs>@renderer.Render(variation)</proofs>
+	                    }
+
+	                    @if (variation.Classification != null)
+	                    {
+	                        <classification>
+	                            <OWASP2013>@variation.Classification.Owasp2013</OWASP2013>
+	                            <OWASP2017>@variation.Classification.Owasp2017</OWASP2017>
+	                            <WASC>@variation.Classification.Wasc</WASC>
+	                            <CWE>@variation.Classification.Cwe</CWE>
+	                            <CAPEC>@variation.Classification.Capec</CAPEC>
+	                            <PCI32>@variation.Classification.Pci32</PCI32>
+	                            <HIPAA>@variation.Classification.Hipaa</HIPAA>
+	                            <OWASPPC>@variation.Classification.OwaspProactiveControls</OWASPPC>
+	                            @{
+	                                var vectorStringExists = !CvssVectorStringParser.IsVectorStringEmpty(variation.CvssVectorString);
+
+	                                CvssScore cvssScore = vectorStringExists ? CvssScoreCalculator.Calculate(variation.CvssVectorString) : CvssScore.Empty;
+	                            }
+	                            @if (vectorStringExists)
+	                            {
+	                                <CVSS>
+	                                    <vector>@variation.CvssVectorString</vector>
+
+	                                    <score>
+	                                        <type>Base</type>
+	                                        <value>@cvssScore.BaseScore</value>
+	                                        <severity>@cvssScore.BaseScore.Severity</severity>
+	                                    </score>
+	                                    <score>
+	                                        <type>Temporal</type>
+	                                        <value>@cvssScore.TemporalScore</value>
+	                                        <severity>@cvssScore.TemporalScore.Severity</severity>
+	                                    </score>
+	                                    <score>
+	                                        <type>Environmental</type>
+	                                        <value>@cvssScore.EnvironmentalScore</value>
+	                                        <severity>@cvssScore.EnvironmentalScore.Severity</severity>
+	                                    </score>
+
+	                                </CVSS>
+	                            }
+	                        </classification>
+	                    }
+
+	                    @if (variation.VersionVulnerabilities.Any())
+	                    {
+	                        <knownvulnerabilities>
+	                            @foreach (var implied in variation.VersionVulnerabilities)
+	                            {
+	                                <knownvulnerability>
+	                                    <title>@implied.Title</title>
+	                                    <severity>@implied.Severity</severity>
+	                                    <references>@(implied.References == null ? string.Empty : implied.References.Trim())</references>
+	                                    <references>@(implied.Bdu == null ? string.Empty : implied.Bdu.Trim())</references>
+	                                    <affectedversions>@implied.AffectedVersions</affectedversions>
+	                                </knownvulnerability>
+	                            }
+	                        </knownvulnerabilities>
+	                    }
+	                </vulnerability>
+	            }
+	        }
+	    }
+	}
+</netsparker>

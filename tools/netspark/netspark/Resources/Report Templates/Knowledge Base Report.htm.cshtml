@@ -1,0 +1,437 @@
+@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using System.IO
+@using System.Linq
+@using System.Text
+@using System.Text.RegularExpressions
+@using MSL.Common.Extensions
+@using MSL.Common.Net.Security
+@using MSL.Common.Text
+@using MSL.Common.Text.Encoding
+@using MSL.Common.Utilities
+@using MSL.Core.Configuration
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Knowledgebase
+@using MSL.Core.Interface
+@using MSL.Core.Process.Parsing
+@using MSL.Core.Process.Reporting
+@using MSL.Core.Resources
+@using MSL.Core.Utilities
+
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+	var csss = new StringBuilder();
+	var cssImages = ReportingUtility.GetImagesAsCss("logo.gif", "information.png");
+
+	csss.AppendLine(cssImages);
+	csss.AppendLine(ReportingUtility.CreateVulnerabilityChartAsCss(Model.VulnerabilityManager, 760, 390, "img-vulntypes"));
+
+	var dashUrl = (Model.ScanProfile.Uri.AbsoluteUri.Length > 45) ? (Model.ScanProfile.Uri.AbsoluteUri.Substring(0, 45) + "...") : Model.ScanProfile.Uri.AbsoluteUri;
+
+	var kbItemCount = (Model.KnowledgebaseNodes != null && Model.KnowledgebaseNodes.Count > 0) ? Model.KnowledgebaseNodes.Sum(x => x.Items.Count) : 0;
+	var startTime = ScanSettings.Instance.StartTime.ToLocalTime();
+	var timeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+	var startTimeInfo = startTime.FormatWithTimeZone(timeFormat, TimeZoneInfo.Local);
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="@ReportingUtility.HtmlLangAtributeValue">
+<head>
+	<title>@string.Format(Literals.KnowledgeBaseReport_Title, Decode.Url(Model.ScanProfile.Uri.AbsoluteUri))</title>
+	<style type="text/css">
+		@Raw(csss.ToString())
+		body {
+			margin: 30px;
+		}
+
+		p, div, td, h1, h2, h3 {
+			font-family: Verdana, Arial, sans-serif;
+			font-size: 12px;
+		}
+
+		.board {
+			background-color: #F7F7F7;
+			padding: 10px;
+		}
+
+		#netsparker {
+			margin-bottom: 20px;
+		}
+
+		.section-table {
+			width: 100%;
+			margin-bottom: 50px;
+			page-break-inside: avoid;
+		}
+
+			.section-table td {
+				vertical-align: top;
+				page-break-inside: auto;
+			}
+
+		#dashboard-table td, #dashboard-table td div, .infobox div.header {
+			font-family: Consolas, Lucida Console, Courier New, Courier, monospace;
+			font-size: 17px;
+			color: #666;
+		}
+
+		.block {
+			color: #FFF;
+			font-family: Trebuchet MS, Tahoma, sans-serif;
+			font-size: 17px;
+			color: #FFF;
+			padding: 4px 8px 4px 8px;
+			margin-bottom: 1px;
+		}
+
+		img.severity {
+			padding-right: 10px;
+		}
+
+		#dashboard-table .td-right {
+			padding-left: 5px;
+		}
+
+		.dashboard-url {
+			color: #000;
+		}
+
+		.tdhead {
+			background-color: #CCCCCC;
+			padding: 2px 5px 2px 5px;
+			font-weight: bold;
+			text-align: right;
+			color: #333333;
+		}
+
+		h1, h2, h3, h4 {
+			font-size: 32px;
+			font-family: Trebuchet MS, Tahoma, sans-serif;
+		}
+
+		h1 {
+			border-bottom: 6px solid #CCC;
+			display: inline;
+		}
+
+		.allcaps {
+			text-transform: uppercase;
+		}
+
+		h2 {
+			color: #333;
+			font-size: 26px;
+			font-weight: normal;
+			margin-bottom: 15px;
+		}
+
+		h3 {
+			color: #666;
+			font-size: 20px;
+			font-weight: normal;
+			margin-bottom: 5px;
+		}
+
+		h4 {
+			color: #666;
+			font-size: 18px;
+			font-weight: normal;
+			margin-bottom: 5px;
+		}
+
+		table {
+			border: 0;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+		#dashboard-table td {
+			padding: 1px;
+			margin: 1px;
+		}
+
+		#dashboard-table {
+			margin-top: 20px;
+			border-spacing: 1px;
+			border: 1px;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+		.kb-container {
+			margin-top: 15px; 
+			margin-bottom: 20px;
+		}
+
+		.kb-table {
+			margin-top: 15px;
+			table-layout: fixed;
+			width: 100%;
+		}
+
+			.kb-table th {
+				border: 1px solid #CCC;
+				background-color: #F7F7F7;
+				padding: 5px 10px;
+				text-align: left;
+				font-family: Consolas, Lucida Console, Courier New, Courier, monospace;
+			}
+
+			.kb-table td {
+				border: 1px solid #CCC;
+				padding: 5px 10px;
+				word-wrap: break-word;
+				font-family: Consolas, Lucida Console, Courier New, Courier, monospace;
+			}
+
+		.kbperfitem {
+			font-weight: bold;
+			vertical-align: top;
+		}
+
+		.kbperfsubitem {
+			font-family: Consolas, Lucida Console, Courier New, Courier, monospace;
+			margin-top: 15px;
+			font-weight: normal;
+		}
+
+		.infobox {
+			padding: 4px 8px 4px 8px;
+			border: 1px solid #FFF;
+			margin-bottom: 5px;
+			text-align: center;
+			color: #999;
+			width: 90px;
+		}
+
+			.infobox div.header {
+				margin: 0px;
+				font-weight: normal;
+				color: #333;
+			}
+
+		.itemcount {
+			font-size: 60px;
+			font-family: Trebuchet MS, Tahoma, sans-serif;
+		}
+
+		.identified {
+			color: #000;
+		}
+
+		.kb-block, .kb-block-count {
+			font-family: Trebuchet MS, Tahoma, sans-serif;
+			font-size: 15px;
+		}
+
+		.kb-block-count {
+			color: #666;
+			text-align: right;
+		}
+
+		.kb-block {
+			float: right;
+			width: 105px;
+			padding: 20px;
+		}
+
+		.kb-block .block {
+			font-size: 14px;
+		}
+
+		.kb-block-inner-count {
+			font-weight: normal;
+			margin-top: -10px;
+			margin-left: -3px;
+		}
+
+		.vc {
+			font: 9px Consolas, Lucida Console, Courier New, Courier, monospace;
+			border-left: 6px solid #CCC;
+			padding-left: 10px;
+			margin-left: 10px;
+			display: block;
+			overflow: hidden;
+			word-wrap: break-word;
+		}
+
+		.divider {
+			clear: both;
+		}
+
+		h3.extra {
+			color: #F60;
+		}
+
+		.highlight {
+			color: red;
+			font-weight: bold;
+		}
+
+		.weak {
+			color: #ff7f50;
+		}
+
+		.cprompt {
+			font-size: 14px;
+			background-color: #000;
+			padding: 15px;
+			margin-top: 5px;
+			font-family: Consolas, Lucida Console, Courier New, Courier, monospace;
+			color:#fff;
+			width:85%;
+			word-wrap: break-word;
+		    white-space: pre-wrap;
+		    white-space: -moz-pre-wrap;
+		    white-space: -pre-wrap;
+		    white-space: -o-pre-wrap;
+		}
+	</style>
+	<script type="text/javascript">
+	<!--
+	window.onload = function () {
+		var divs = document.getElementsByTagName("div");
+		for (var i = 0; i < divs.length; i++) {
+			divs[i].style.overflow = divs[i].className == "vc" ? "auto" : "";
+		}
+	}
+	// -->
+	</script>
+</head>
+<body>
+	<div style="width: 100%;">
+		<div style="text-align: center;">
+			<span class="img-logo"></span>
+		</div>
+		<table class="section-table">
+			<tr>
+				<td colspan="3">
+					<h1 class="allcaps">@Literals.KnowledgeBaseReport_ScanReportSummary</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="board">
+					<table id="dashboard-table">
+						<tr>
+							<td>
+								<div class="tdhead">
+									@Literals.ReportTemplate_TargetUrl
+								</div>
+							</td>
+							<td class="td-right">
+								<span class="dashboard-url">
+									<a href="@Decode.Url(Model.ScanProfile.Uri.AbsoluteUri)" title="@Decode.Url(Model.ScanProfile.Uri.AbsoluteUri)">@dashUrl</a></span>
+							</td>
+						</tr>
+						@if (!Model.ScanProfile.AdditionalWebsites.IsNullOrEmpty())
+						{
+							<tr>
+								<td>
+									<div class="tdhead">
+										@Literals.ReportTemplate_AdditionalWebsites
+									</div>
+								</td>
+								<td>
+									@{
+										foreach (var additionalWebsite in Model.ScanProfile.AdditionalWebsites)
+										{
+											var additionalWebsiteUri = Decode.Url(additionalWebsite.TargetUrl);
+											<a href="@additionalWebsiteUri">@additionalWebsiteUri</a> @(additionalWebsite.Canonical ? Literals.ReportTemplate_CanonicalWebsite : string.Empty)<br />
+										}
+									}
+								</td>
+							</tr>
+						}
+						<tr>
+							<td>
+								<div class="tdhead">
+									@Literals.ReportTemplate_ScanDate
+								</div>
+							</td>
+							<td class="td-right">
+								@startTimeInfo
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="tdhead">
+									@Literals.ReportTemplate_ReportDate
+								</div>
+							</td>
+							<td class="td-right">
+								@DateTime.Now.FormatWithTimeZone(timeFormat, TimeZoneInfo.Local)
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="tdhead">
+									@Literals.ReportTemplate_ScanDuration
+								</div>
+							</td>
+							@{
+								var elapsedDays = (ScanSettings.Instance.ElapsedTime.Days > 0) ? string.Format(Literals.ReportTemplate_ElapsedDays, ScanSettings.Instance.ElapsedTime.Days) : string.Empty;
+								var elapsedTime = elapsedDays + new TimeSpan(ScanSettings.Instance.ElapsedTime.Hours, ScanSettings.Instance.ElapsedTime.Minutes, ScanSettings.Instance.ElapsedTime.Seconds);
+
+								<td class="td-right">@elapsedTime</td>
+							}
+						</tr>
+						<tr>
+							<td>
+								<div class="tdhead">
+									@Literals.ReportTemplate_NetsparkerVersion
+								</div>
+							</td>
+                            <td class="td-right">@ScanSettings.Instance.ProductVersion</td>
+						</tr>
+					</table>
+				</td>
+				<td class="board" align="right">
+					<div class="infobox">
+						<div class="header">@Literals.ReportTemplate_TotalRequests</div>
+						@ScanSettings.Instance.RequestCount
+					</div>
+					<div class="infobox">
+						@{
+							var avgSpeed = (ScanSettings.Instance.RequestCount / ScanSettings.Instance.ElapsedTime.TotalSeconds).ToString("N2");
+						}
+						<div class="header">@Literals.ReportTemplate_AverageSpeed</div>
+						@string.Format(Literals.ReportTemplate_AverageSpeedFormat, avgSpeed)
+					</div>
+				</td>
+				<td rowspan="3" style="padding-left: 10px;">
+					<div class="itemcount">
+						@kbItemCount</div>
+					<div class="identified">
+						@Literals.ReportTemplate_Identified</div>
+				</td>
+			</tr>
+		</table>
+		@if (Model.KnowledgebaseNodes != null && kbItemCount > 0)
+		{
+			var i = 1;
+			foreach (var node in Model.KnowledgebaseNodes)
+			{
+				if (node.ShortName.Equals(AttackPossibilityList.KnowledgeBaseShortName) && !Settings.Default.ShowAttackPossibilityList)
+				{
+					continue;
+				}
+
+				var items = node.Items.Select(x => x.Value).ToArray();
+				<h1 style="page-break-before: always;">@string.Format("{0}. {1}", i++, Encode(node.Name))</h1>
+				<div class="kb-block">
+					<div class="kb-block-count">
+						@items.Length
+						@Literals.ReportTemplate_Total
+					</div>
+				</div>
+				<div class="kb-container">
+				    @Raw(node.RenderTemplate())
+				
+				</div>
+				<div class="divider"></div>	
+			}
+		}
+		</div>
+</body>
+</html>

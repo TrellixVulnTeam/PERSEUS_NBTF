@@ -1,0 +1,89 @@
+@using System
+@using System.Globalization
+@using System.IO
+@using System.Text
+@using MSL.Common.Text;
+@using MSL.Core.Configuration
+@using MSL.Core.Process.Reporting;
+@using MSL.Core.Utilities
+@using Newtonsoft.Json
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+	var scanId = ScanSettings.Instance.ScanManager.SsrfSettings.ScanId;
+	var targetUrl = Model.ScanProfile.TargetUrl;
+	var duration = ScanSettings.Instance.ElapsedTime;
+	var startTime = ScanSettings.Instance.StartTime.ToLocalTime().FormatWithTimeZone();
+
+	var stringWriter = new StringWriter();
+
+	using (JsonWriter writer = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented, IndentChar = '\t', Indentation = 1 })
+	{
+		writer.WriteStartObject();
+		writer.WritePropertyName("Generated");
+		writer.WriteValue(DateTime.Now.ToLocalTime().FormatWithTimeZone());
+
+		writer.WritePropertyName("Target");
+		writer.WriteStartObject();
+		writer.WritePropertyName("ScanId");
+		writer.WriteValue(scanId);
+		writer.WritePropertyName("Url");
+		writer.WriteValue(targetUrl);
+		writer.WritePropertyName("Initiated");
+		writer.WriteValue(startTime);
+		writer.WritePropertyName("Duration");
+		writer.WriteValue(duration);
+		writer.WriteEndObject();
+		
+		writer.WritePropertyName("UrlList");
+		writer.WriteStartObject();
+		writer.WritePropertyName("Type");
+		writer.WriteValue("Crawled");
+		writer.WritePropertyName("Requests");
+		writer.WriteStartArray();
+
+		foreach (var link in Model.LinkPool.ToArray())
+		{
+			writer.WriteStartObject();
+			writer.WritePropertyName("Url");
+			writer.WriteValue(link.Uri.AbsoluteUri);
+			writer.WritePropertyName("Method");
+			writer.WriteValue(link.UriManager.HttpMethod);
+			writer.WritePropertyName("StatusCode");
+			writer.WriteValue((int)link.StatusCode);
+			writer.WritePropertyName("ResponseTime");
+			writer.WriteValue(link.ResponseTime);
+			writer.WritePropertyName("Parameters");
+			writer.WriteStartArray();
+
+			if (link.UriManager.Parameters.Count == 0)
+			{
+				writer.WriteRaw(" ");
+			}
+			else
+			{
+				foreach (var param in link.UriManager.Parameters)
+				{
+					writer.WriteStartObject();
+					writer.WritePropertyName("Name");
+					writer.WriteValue(param.Name);
+					writer.WritePropertyName("Type");
+					writer.WriteValue(param.TypeName);
+					writer.WritePropertyName("Value");
+					writer.WriteValue(param.Value);
+					writer.WriteEndObject();
+				}
+			}
+
+			writer.WriteEndArray();
+		    writer.WritePropertyName("ParsingSource");
+		    writer.WriteValue(link.UriManager.ParsingSource.ToString());
+			writer.WriteEndObject();
+		}
+
+		writer.WriteEndArray();
+		writer.WriteEndObject();
+		writer.WriteEndObject();
+
+<text>@Raw(stringWriter.ToString())</text>
+	}
+}

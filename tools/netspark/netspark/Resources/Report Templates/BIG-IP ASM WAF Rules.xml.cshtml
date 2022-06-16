@@ -1,0 +1,11 @@
+@using System.Linq
+@using MSL.Common.Text;
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Reporting;
+@using MSL.Core.Process.WafRules
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+    var ruleGenerator = new WafRuleGenerator();
+    var report = ruleGenerator.GenerateAndExportRules(WafType.F5BigIpAsm, Model.Vulnerabilities.Cast<Vulnerability>());
+}
+@Raw(System.Web.HttpUtility.HtmlDecode(report))

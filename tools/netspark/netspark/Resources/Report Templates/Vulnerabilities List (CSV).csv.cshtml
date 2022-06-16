@@ -1,0 +1,66 @@
+@using System.Collections.Generic
+@using System.Globalization
+@using System.Linq
+@using System.Text
+@using MSL.Common.Text;
+@using MSL.Core.Entities.Vulnerability
+@using MSL.Core.Process.Reporting;
+@using MSL.Core.Resources;
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+    // Filter the vuln list and cache it
+    var vulnList = ReportingUtility.GetReportableVulnerabilities(Model.Vulnerabilities, Model).ToArray();
+
+	// Sort vulnerabilities based on their severity, Type, confirmation and certainty
+	var sortedVulns = from IVulnerabilityView v in vulnList
+		orderby v.Severity descending, v.Order ascending, v.Type ascending, v.IsConfirmed descending, v.Certainty descending, v.AbsoluteUri
+		select v;
+
+<text>@string.Format("{1}{0}URL{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}", CultureInfo.CurrentCulture.TextInfo.ListSeparator, Literals.ReportTemplate_Vulnerability, Literals.ReportTemplate_Method, Literals.Severity,  Literals.ReportTemplate_Parameter, Literals.ReportTemplate_ParameterType, Literals.ReportTemplate_ParameterValue)</text>
+
+	var stringBuilder = new StringBuilder();
+    foreach (var vuln in sortedVulns)
+    {
+        foreach (var variation in ReportingUtility.GetReportableVulnerabilities(vuln, Model))
+        {
+            stringBuilder.Append("\"");
+            stringBuilder.Append(variation.Title);
+            stringBuilder.Append("\"");
+            stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+            stringBuilder.Append("\"");
+            stringBuilder.Append(Encode(variation.AbsoluteUri));
+            stringBuilder.Append("\"");
+            stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+            stringBuilder.Append("\"");
+            stringBuilder.Append(variation.HttpMethod);
+            stringBuilder.Append("\"");
+            stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+            stringBuilder.Append("\"");
+            stringBuilder.Append(variation.Severity);
+            stringBuilder.Append("\"");
+            stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+
+            // Only show parameters if it's actively identified
+            if ((variation.SignatureType == VulnerabilitySignatureType.Active || variation.SignatureType == VulnerabilitySignatureType.Groupable) && !string.IsNullOrEmpty(variation.AttackParameterName))
+            {
+
+                stringBuilder.Append("\"");
+                stringBuilder.Append(Encode(ReportingUtility.EscapeCsvMacros(variation.AttackParameterName)));
+                stringBuilder.Append("\"");
+                stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                stringBuilder.Append("\"");
+                stringBuilder.Append(variation.AttackParameterTypeName);
+                stringBuilder.Append("\"");
+                stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                stringBuilder.Append("\"");
+                stringBuilder.Append(Encode(ReportingUtility.EscapeCsvMacros(variation.AttackParameterValue)));
+                stringBuilder.Append("\"");
+                stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+            }
+
+<text>@Raw(stringBuilder.ToString())</text>
+
+            stringBuilder.Clear();
+        }
+    }
+}

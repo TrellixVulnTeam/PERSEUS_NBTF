@@ -1,0 +1,769 @@
+[
+    {
+        "name": "jquery",
+        "extractors": {
+            "func": [ "/[0-9.]+/.test(jQuery.fn.jquery) ? jQuery.fn.jquery : undefined" ],
+            "presignature": "jquery",
+            "uri": [ "/(§§version§§)/jquery(\\.min)?\\.js" ],
+            "filename": [ "jquery-(§§version§§)(\\.min)?\\.js" ],
+            "filecontent": [
+                "/\\*!? jQuery v(§§version§§)",
+                "\\* jQuery JavaScript Library v(§§version§§)",
+                "\\* jQuery (§§version§§) - New Wave Javascript",
+                "// \\$Id: jquery.js,v (§§version§§)",
+                "/\\*! jQuery v(§§version§§)",
+                "[^a-z]f=\"(§§version§§)\",.*[^a-z]jquery:f,",
+                "[^a-z]m=\"(§§version§§)\",.*[^a-z]jquery:m,",
+                "[^a-z.]jquery:[ ]?\"(§§version§§)\""
+            ]
+        }
+    },
+    {
+        "name": "jquery-migrate",
+        "extractors": {
+            "presignature": "migrate",
+            "filename": [ "jquery-migrate-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*!?(?:\n \\*)? jQuery Migrate(?: -)? v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "jquery-mobile",
+        "extractors": {
+            "func": [ "jQuery.mobile.version" ],
+            "presignature": "mobile",
+            "filename": [ "jquery.mobile-(§§version§§)(.min)?\\.js" ],
+            "uri": [ "/(§§version§§)/jquery.mobile(\\.min)?\\.js" ],
+            "filecontent": [ "/\\*!?(?:\n \\*)? jQuery Mobile(?: -)? v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "jquery-ui-dialog",
+        "extractors": {
+            "func": [ "jQuery.ui.dialog.version" ],
+            "presignature": "jquery UI",
+            "filecontent": [
+                "/\\*!? jQuery UI - v(§§version§§)(.*\n){1,3}.*jquery\\.ui\\.dialog\\.js",
+                "/\\*!?[\n *]+jQuery UI (§§version§§)(.*\n)*.*\\.ui\\.dialog",
+                "/\\*!?[\n *]+jQuery UI Dialog (§§version§§)"
+            ]
+        }
+    },
+    {
+        "name": "jquery-ui-autocomplete",
+        "extractors": {
+            "func": [ "jQuery.ui.autocomplete.version" ],
+            "presignature": "jquery UI",
+            "filecontent": [
+                "/\\*!? jQuery UI - v(§§version§§)(.*\n){1,3}.*jquery\\.ui\\.autocomplete\\.js",
+                "/\\*!?[\n *]+jQuery UI (§§version§§)(.*\n)*.*\\.ui\\.autocomplete",
+                "/\\*!?[\n *]+jQuery UI Autocomplete (§§version§§)"
+            ]
+        }
+    },
+    {
+        "name": "jquery-ui-tooltip",
+        "extractors": {
+            "func": [ "jQuery.ui.tooltip.version" ],
+            "presignature": "jquery UI",
+            "filecontent": [
+                "/\\*!? jQuery UI - v(§§version§§)(.*\n){1,3}.*jquery\\.ui\\.tooltip\\.js",
+                "/\\*!?[\n *]+jQuery UI (§§version§§)(.*\n)*.*\\.ui\\.tooltip",
+                "/\\*!?[\n *]+jQuery UI Tooltip (§§version§§)"
+            ]
+        }
+    },
+    {
+        "name": "jquery.prettyPhoto",
+        "extractors": {
+            "func": [ "jQuery.prettyPhoto.version" ],
+            "presignature": "prettyPhoto",
+            "filecontent": [
+                "/\\*(?:.*[\n\r]+){1,3}.*Class: prettyPhoto(?:.*[\n\r]+){1,3}.*Version: (§§version§§)",
+                "\\.prettyPhoto[ ]?=[ ]?\\{version:[ ]?(?:'|\")(§§version§§)(?:'|\")\\}"
+            ]
+        }
+    },
+    {
+        "name": "jPlayer",
+        "extractors": {
+            "func": [ "new jQuery.jPlayer().version.script" ],
+            "presignature": "jPlayer",
+            "filecontent": [
+                "/\\*(?:.*[\n\r]+){1,3}.*jPlayer Plugin for jQuery(?:.*[\n\r]+){1,10}.*Version: (§§version§§)"
+            ]
+        }
+    },
+    {
+        "name": "YUI",
+        "extractors": {
+            "func": [ "YUI.Version", "YAHOO.VERSION" ],
+            "presignature": "yui",
+            "filename": [ "yui-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/*\nYUI (§§version§§)", "/yui/license.(?:html|txt)\nversion: (§§version§§)" ]
+        }
+    },
+    {
+        "name": "prototypejs",
+        "extractors": {
+            "func": [ "Prototype.Version" ],
+            "presignature": "prototype",
+            "uri": [ "/(§§version§§)/prototype(\\.min)?\\.js" ],
+            "filename": [ "prototype-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [
+                "Prototype JavaScript framework, version (§§version§§)",
+                "Prototype[ ]?=[ ]?\\{[ \r\n\t]*Version:[ ]?(?:'|\")(§§version§§)(?:'|\")"
+            ]
+        }
+    },
+    {
+        "name": "ember",
+        "extractors": {
+            "func": [ "Ember.VERSION" ],
+            "presignature": "ember",
+            "uri": [ "/(?:v)?(§§version§§)/ember(\\.min)?\\.js" ],
+            "filename": [ "ember-(§§version§§)(\\.min)?\\.js" ],
+            "filecontent": [
+                "Project:   Ember -(?:.*\n){9,11}// Version: v(§§version§§)",
+                "// Version: v(§§version§§)(.*\n){10,15}(Ember Debug|@module ember|@class ember)",
+                "Ember.VERSION[ ]?=[ ]?(?:'|\")(§§version§§)(?:'|\")"
+            ]
+        }
+    },
+    {
+        "name": "angularjs",
+        "extractors": {
+            "func": [ "angular.version.full" ],
+            "presignature": "angular",
+            "uri": [ "/(§§version§§)/angular(\\.min)?\\.js" ],
+            "filename": [ "angular(?:js)?-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [
+                "/\\*[\\s\\S]*AngularJS v(§§version§§)",
+                "http://errors\\.angularjs\\.org/(§§version§§)/"
+            ]
+        }
+    },
+    {
+        "name": "backbone.js",
+        "extractors": {
+            "func": [ "Backbone.VERSION" ],
+            "presignature": "backbone",
+            "uri": [ "/(§§version§§)/backbone(\\.min)?\\.js" ],
+            "filename": [ "backbone(?:js)?-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "//[ ]+Backbone.js (§§version§§)", "a=t.Backbone={}}a.VERSION=\"(§§version§§)\"" ]
+        }
+    },
+    {
+        "name": "mustache.js",
+        "extractors": {
+            "func": [ "Mustache.version" ],
+            "presignature": "mustache",
+            "uri": [ "/(§§version§§)/mustache(\\.min)?\\.js" ],
+            "filename": [ "mustache(?:js)?-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [
+                "name:\"mustache.js\",version:\"(§§version§§)\"",
+                "[^a-z]mustache.version[ ]?=[ ]?(?:'|\")(§§version§§)(?:'|\")",
+                "exports.name[ ]?=[ ]?\"mustache.js\";[\n ]*exports.version[ ]?=[ ]?(?:'|\")(§§version§§)(?:'|\");"
+            ]
+        }
+    },
+    {
+        "name": "handlebars.js",
+        "extractors": {
+            "func": [ "Handlebars.VERSION" ],
+            "presignature": "handlebars",
+            "uri": [ "/(§§version§§)/handlebars(\\.min)?\\.js" ],
+            "filename": [ "handlebars(?:js)?-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [
+                "Handlebars.VERSION = \"(§§version§§)\";",
+                "Handlebars=\\{VERSION:(?:'|\")(§§version§§)(?:'|\")",
+                "this.Handlebars=\\{\\};[\n\r \t]+\\(function\\([a-z]\\)\\{[a-z].VERSION=(?:'|\")(§§version§§)(?:'|\")"
+            ]
+        }
+    },
+    {
+        "name": "easyXDM",
+        "extractors": {
+            "uri": [ "/(easyXDM-)?(§§version§§)/easyXDM(\\.min)?\\.js" ],
+            "presignature": "easyXDM",
+            "filename": [ "easyXDM-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [
+                " \\* easyXDM\n \\* http://easyxdm.net/(?:\r|\n|.)+version:\"([0-9]+.[0-9]+.[0-9]+)",
+                "@class easyXDM(?:.|\r|\n)+@version ([0-9]+.[0-9]+.[0-9]+)(\r|\n)"
+            ],
+            "hashes": { "cf266e3bc2da372c4f0d6b2bd87bcbaa24d5a643": "2.4.6" }
+        }
+    },
+    {
+        "name": "plupload",
+        "extractors": {
+            "func": [ "plupload.VERSION" ],
+            "presignature": "plupload",
+            "uri": [ "/(§§version§§)/plupload(\\.min)?\\.js" ],
+            "filename": [ "plupload-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [
+                "\\* Plupload - multi-runtime File Uploader(?:\r|\n)+ \\* v(§§version§§)",
+                "var g=\\{VERSION:\"(§§version§§)\",.*;window.plupload=g\\}"
+            ]
+        }
+    },
+    {
+        "name": "DOMPurify",
+        "extractors": {
+            "func": [ "DOMPurify.version" ],
+            "presignature": "DOMPurify"
+        }
+    },
+    {
+        "name": "DWR",
+        "extractors": {
+            "func": [ "dwr.version.label" ],
+            "presignature": "dwr-",
+            "filecontent": [ " dwr-(§§version§§).jar" ]
+        }
+    },
+    {
+        "name": "Video.js",
+        "extractors": {
+            "func": [ "videojs.VERSION" ],
+            "urlpresignature": "/video.",
+            "presignature": "videojs.",
+            "uri": [ "/(§§version§§)/video(\\.min)?\\.js" ],
+            "filecontent": [ "videojs.VERSION = '(§§version§§)';" ]
+        }
+    },
+    {
+        "name": "knockout.js",
+        "extractors": {
+            "func": [ "ko.version" ],
+            "presignature": "knockout",
+            "filename": [ "knockout-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "\\* Knockout JavaScript library v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "bootstrap.js",
+        "extractors": {
+            "func": [ "$.fn.tooltip.Constructor.VERSION", "$.fn.alert.Constructor.VERSION", "$.fn.modal.Constructor.VERSION" ],
+            "presignature": "Bootstrap",
+            "filecontent": [ "\\* Bootstrap v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "typeahead.js",
+        "extractors": {
+            "presignature": "typeahead",
+            "filecontent": [ "\\* typeahead.js (§§version§§)", "var VERSION = \"(§§version§§)\"" ]
+        }
+    },
+    {
+        "name": "FooTable",
+        "extractors": {
+            "presignature": "footable",
+            "filename": [ "footable-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "FooTable [\\s\\S]* @version (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Sortable.js",
+        "extractors": {
+            "func": [ "Sortable.version" ],
+            "presignature": "Sortable",
+            "filename": [ "Sortable-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*! Sortable (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Image Picker",
+        "extractors": {
+            "urlpresignature": "image-picker",
+            "filename": [ "image-picker-(§§version§§)(.min)?\\.js" ],
+            "presignature": "// image picker",
+            "filecontent": [ "// Image Picker[\\s\\S]*// Version (§§version§§)" ]
+        }
+    },
+    {
+        "name": "jQuery Validation",
+        "extractors": {
+            "urlpresignature": "jquery.validate-",
+            "presignature": "jQuery Validation",
+            "filename": [ "jquery.validate-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "\\*!? jQuery Validation Plugin -? ?v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "ASP.NET SignalR",
+        "extractors": {
+            "func": [ "$.signalR.version" ],
+            "presignature": "signalR",
+            "filename": [ "jquery.signalR-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "\\* ASP.NET SignalR JavaScript Library v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Select2",
+        "extractors": {
+            "presignature": "select2",
+            "filename": [ "select2-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*!?[\\s\\S]* \\* Select2 (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Moment.js",
+        "extractors": {
+            "func": [ "moment.version" ],
+            "presignature": "moment",
+            "filename": [ "moment-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "//! moment\\.js[\\s\\S]*//! version : (§§version§§)" ]
+        }
+    },
+    {
+        "name": "html5shiv",
+        "extractors": {
+            "func": [ "html5.version" ],
+            "presignature": "shiv",
+            "filename": [ "html5shiv-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "\\* @preserve HTML5 Shiv (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Ion.RangeSlider",
+        "extractors": {
+            "func": [ "jQuery('input').first().ionRangeSlider().data('ionRangeSlider').VERSION" ],
+            "presignature": "ion.rangeSlider",
+            "filename": [ "ion.rangeSlider-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "// Ion\\.RangeSlider[\\s\\S]*// version (§§version§§)", "// Ion\\.RangeSlider[\\s\\S]* \\| version (§§version§§)" ]
+        }
+    },
+    {
+        "name": "jsTree",
+        "extractors": {
+            "func": [ "$.jstree.version" ],
+            "presignature": "jstree",
+            "filename": [ "jstree-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*! jsTree - v(§§version§§)", " \\* jsTree (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Modernizr",
+        "extractors": {
+            "func": [ "Modernizr._version" ],
+            "presignature": "modernizr",
+            "filename": [ "modernizr-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ " \\* modernizr v(§§version§§)", "/\\*! modernizr (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Respond.js",
+        "extractors": {
+            "presignature": " Respond.js",
+            "filecontent": [ "/\\*! Respond.js v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Fuel UX",
+        "extractors": {
+            "presignature": "Fuel UX",
+            "filename": [ "fuelux-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*![\\s\\S]* \\* Fuel UX v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Bootbox",
+        "extractors": {
+            "presignature": "bootbox",
+            "filename": [ "bootbox-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ " \\* bootbox.js \\[?v(§§version§§)\\]?" ]
+        }
+    },
+    {
+        "name": "Knockout Mapping",
+        "extractors": {
+            "presignature": "knockout",
+            "filename": [ "knockout.mapping-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "// Knockout Mapping plugin v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "jQuery Mask",
+        "extractors": {
+            "presignature": "jquery.mask",
+            "filename": [ "jquery.mask-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*\\*[\\s\\S]*\\* jquery\\.mask\\.js[\\s\\S]*\\* @version: v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Bootstrap 3 Date/Time Picker",
+        "extractors": {
+            "presignature": "bootstrap-datetime",
+            "filename": [ "bootstrap-datetimepicker-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*! version : (§§version§§)[\\s\\S]* bootstrap-datetimejs" ]
+        }
+    },
+    {
+        "name": "Bootstrap Toggle",
+        "extractors": {
+            "presignature": "-toggle",
+            "filename": [ "bootstrap2?-toggle-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "\\* Bootstrap Toggle: bootstrap2?-toggle\\.js v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "JavaScript Cookie",
+        "extractors": {
+            "urlpresignature": "js.cookie-",
+            "presignature": "js-cookie",
+            "filename": [ "js.cookie-(§§version§§)(.min)?\\.js" ],
+            "filecontent": [ "/\\*! js-cookie v(§§version§§)", "/\\*![\\s\\S]* \\* JavaScript Cookie v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "React",
+        "extractors": {
+            "func": [ "React.version" ],
+            "presignature": "React v",
+            "filecontent": [ "/\\*\\*[\\s\\S]* React v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "CKEditor",
+        "extractors": {
+            "func": [ "CKEDITOR.version" ],
+            "presignature": ".version"
+        }
+    },
+    {
+        "name": "Zepto.js",
+        "extractors": {
+            "presignature": "Zepto v",
+            "filecontent": [ "/\\* Zepto v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Hammer.JS",
+        "extractors": {
+            "presignature": "Hammer.JS",
+            "filecontent": [ "/\\*! Hammer\\.JS - v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Vue.js",
+        "extractors": {
+            "func": [ "Vue.version" ],
+            "presignature": "Vue.js",
+            "filecontent": [ "/\\*![\\s\\S]* * Vue\\.js v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Phaser",
+        "extractors": {
+            "func": [ "Phaser.VERSION" ],
+            "presignature": "Phaser",
+            "filecontent": [ "/\\* Phaser v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Chart.js",
+        "extractors": {
+            "presignature": "Chart.js",
+            "filecontent": [ "/\\*![\\s\\S]* \\* Chart\\.js[\\s\\S]* \\* Version: (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Ramda",
+        "extractors": {
+            "presignature": "Ramda",
+            "filecontent": [ "//  Ramda v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "reveal.js",
+        "extractors": {
+            "func": [ "Reveal.VERSION" ],
+            "presignature": "reveal.js"
+        }
+    },
+    {
+        "name": "PixiJS",
+        "extractors": {
+            "presignature": "pixi.js",
+            "filecontent": [ "/\\*![\\s\\S]* \\* pixi.js - v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Fabric.js",
+        "extractors": {
+            "func": [ "fabric.version" ],
+            "presignature": "fabric"
+        }
+    },
+    {
+        "name": "Semantic UI",
+        "extractors": {
+            "presignature": "Semantic UI",
+            "filecontent": [ "/\\*[\\s\\S]* \\* # Semantic UI - (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Leaflet",
+        "extractors": {
+            "presignature": "Leaflet",
+            "filecontent": [ "/\\*[\\s\\S]*\\*? Leaflet (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Foundation",
+        "extractors": {
+            "func": [ "Foundation.version" ],
+            "presignature": "foundation"
+        }
+    },
+    {
+        "name": "three.js",
+        "extractors": {
+            "func": [ "THREE.REVISION" ],
+            "presignature": "three"
+        }
+    },
+    {
+        "name": "PDF.js",
+        "extractors": {
+            "func": [ "PDFJS.version" ],
+            "presignature": "pdfjsVersion"
+        }
+    },
+    {
+        "name": "Intro.js",
+        "extractors": {
+            "func": [ "introJs.version" ],
+            "presignature": "introJs"
+        }
+    },
+    {
+        "name": "axios",
+        "extractors": {
+            "presignature": "axios",
+            "filecontent": [ "/\\* axios v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Fingerprintjs2",
+        "extractors": {
+            "presignature": "Fingerprint2",
+            "func": [ "Fingerprint2.VERSION" ]
+        }
+    },
+    {
+        "name": "XRegExp",
+        "extractors": {
+            "presignature": "XRegExp",
+            "func": [ "XRegExp.version" ]
+        }
+    },
+    {
+        "name": "DataTables",
+        "extractors": {
+            "presignature": "DataTables",
+            "func": [ "jQuery.fn.dataTable.version" ],
+            "filecontent": [ "/\\*![\\s\\S]* DataTables (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Lazy.js",
+        "extractors": {
+            "presignature": "lazy.js",
+            "func": [ "Lazy.VERSION" ],
+            "filecontent": [ "/\\*! lazy.js (§§version§§)" ]
+        }
+    },
+    {
+        "name": "fancyBox",
+        "extractors": {
+            "presignature": "fancyBox",
+            "filecontent": [ "// fancyBox v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Underscore.js",
+        "extractors": {
+            "presignature": "Underscore.js",
+            "func": [ "_.VERSION" ],
+            "filecontent": [ "// *Underscore.js (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Lightbox2",
+        "extractors": {
+            "presignature": "Lightbox",
+            "filecontent": [ "/\\*![\\s\\S]* \\* Lightbox v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "SweetAlert2",
+        "extractors": {
+            "presignature": "SweetAlert2",
+            "func": [ "Sweetalert2.version" ]
+        }
+    },
+    {
+        "name": "Lodash",
+        "extractors": {
+            "presignature": "Lodash",
+            "func": [ "_.VERSION" ]
+        }
+    },
+    {
+        "name": "bluebird",
+        "extractors": {
+            "presignature": "bluebird",
+            "filecontent": [ "\\* bluebird build version (§§version§§)" ],
+            "func": [ "Promise.version" ]
+        }
+    },
+    {
+        "name": "Polymer",
+        "extractors": {
+            "presignature": "Polymer",
+            "func": [ "Polymer.version" ]
+        }
+    },
+    {
+        "name": "Mithril",
+        "extractors": {
+            "presignature": "hyperscript",
+            "func": [ "m.version" ]
+        }
+    },
+    {
+        "name": "ef.js",
+        "extractors": {
+            "presignature": "e.version",
+            "func": [ "ef.version" ]
+        }
+    },
+    {
+        "name": "Math.js",
+        "extractors": {
+            "presignature": "* math.js",
+            "filecontent": [ "\\* math.js[\\s\\S]* \\* @version (§§version§§)" ],
+            "func": [ "math.version" ]
+        }
+    },
+    {
+        "name": "List.js",
+        "extractors": {
+            "presignature": "List.js",
+            "filecontent": [ "// List.js v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "RequireJS",
+        "extractors": {
+            "presignature": "RequireJS",
+            "filecontent": [ "@license RequireJS (§§version§§)" ],
+            "func": [ "require.version", "requirejs.version" ]
+        }
+    },
+    {
+        "name": "Riot.js",
+        "extractors": {
+            "presignature": "Riot",
+            "filecontent": [ "/\\* Riot v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "Inferno",
+        "extractors": {
+            "presignature": "Inferno",
+            "func": [ "Inferno.version" ]
+        }
+    },
+    {
+        "name": "Marionette.js",
+        "extractors": {
+            "presignature": "MarionetteJS",
+            "filecontent": [ "\\* MarionetteJS[\\s\\S]*\\* ----------\\* v(§§version§§)" ],
+            "func": [ "Marionette.VERSION" ]
+        }
+    },
+    {
+        "name": "GSAP",
+        "extractors": {
+            "presignature": "GreenSock",
+            "filecontent": [ "\\* VERSION: (§§version§§)[\\s\\S]*GreenSock. All rights reserved." ],
+            "func": [ "jQuery.gsap.version" ]
+        }
+    },
+    {
+        "name": "slick",
+        "extractors": {
+            "presignature": "slick",
+            "filecontent": [ "Version: (§§version§§)[\\s\\S]*Author: Ken Wheeler" ]
+        }
+    },
+    {
+        "name": "ScrollReveal",
+        "extractors": {
+            "presignature": "ScrollReveal",
+            "filecontent": [ "/\\*! @license ScrollReveal v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "MathJax",
+        "extractors": {
+            "presignature": "MathJax.js",
+            "func": [ "MathJax.version" ]
+        }
+    },
+    {
+        "name": "Rickshaw",
+        "extractors": {
+            "presignature": "Rickshaw",
+            "func": [ "Rickshaw.version" ]
+        }
+    },
+    {
+        "name": "Highcharts",
+        "extractors": {
+            "presignature": "Highcharts",
+            "filecontent": [ "Highcharts JS v(§§version§§)" ],
+            "func": [ "Highcharts.version" ]
+        }
+    },
+    {
+        "name": "Snap.svg",
+        "extractors": {
+            "presignature": "Snap.svg",
+            "filecontent": [ "Snap.svg (§§version§§)" ],
+            "func": [ "Snap.version" ]
+        }
+    },
+    {
+        "name": "Flickity",
+        "extractors": {
+            "presignature": "Flickity",
+            "filecontent": [ "\\* Flickity[\\s\\S]* v(§§version§§)" ]
+        }
+    },
+    {
+        "name": "D3.js",
+        "extractors": {
+            "presignature": "d3js.org",
+            "filecontent": [ "https://d3js\\.org v(§§version§§)" ],
+            "func": [ "d3.version" ]
+        }
+    },
+    {
+        "name": "Google Charts",
+        "extractors": {
+            "presignature": "Google Chart",
+            "filecontent": [ "Google Chart Api Directive Module for AngularJS[\\s\\S]*@version (§§version§§)" ]
+        }
+    },
+    {
+        "name": "Ext JS",
+        "extractors": {
+            "presignature": "Ext JS",
+            "filecontent": [ "Ext JS ([0-9]+\\.[0-9]+\\.[0-9]+)" ]
+        }
+    }
+]

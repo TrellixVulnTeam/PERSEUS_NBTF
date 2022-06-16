@@ -1,0 +1,41 @@
+@using System.Collections.Generic
+@using MSL.Common.Text;
+@using MSL.Common.Text.Encoding
+@using MSL.Core.Entities
+@using MSL.Core.Process.Reporting;
+@using MSL.Core.Resources
+@inherits HelperBaseTemplate<ReportTemplateData>
+@{
+	var separator = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+
+	const string DataTemplate = "\"{0}\"{8}\"{1}\"{8}\"{2}\"{8}\"{3}\"{8}\"{4}\"{8}\"{5}\"{8}\"{6}\"{8}\"{7}\"";
+
+<text>@string.Format("URL{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}", separator, Literals.ReportTemplate_Method, Literals.ReportTemplate_PostParams, Literals.ReportTemplate_JsonParams, Literals.ReportTemplate_XmlParams, Literals.ReportTemplate_ResponseStatusCode, Literals.ReportTemplate_ResponseTime, Literals.ReportTemplate_ParsingSource)</text>
+
+    var links = Model.LinkPool.ToArray();
+	foreach (var link in links)
+	{
+		var postParams = new List<string>();
+		var jsonParams = new List<string>();
+		var xmlParams = new List<string>();
+		foreach (var param in link.UriManager.Parameters)
+		{
+			var escapedParamName = ReportingUtility.EscapeCsvMacros(Decode.Url(param.Name));
+
+			if (param.Type == ParameterType.Post)
+			{
+				postParams.Add(escapedParamName);
+			}
+			else if (param.Type == ParameterType.Json)
+			{
+				jsonParams.Add(escapedParamName);
+			}
+			else if (param.Type == ParameterType.Xml || param.Type == ParameterType.SoapXml)
+			{
+				xmlParams.Add(escapedParamName);
+			}
+		}
+
+<text>@Raw(string.Format(DataTemplate, link.Uri.AbsoluteUri, ReportingUtility.EscapeCsvMacros(link.UriManager.HttpMethod), string.Join(",", postParams), string.Join(",", jsonParams), string.Join(",", xmlParams), (int)link.StatusCode, link.ResponseTime.ToString("0.0"), link.UriManager.ParsingSource, separator))</text>
+	}
+}
