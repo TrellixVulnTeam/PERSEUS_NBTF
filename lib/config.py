@@ -47,6 +47,6 @@ def info():
 def others_info():
 
     blue=Fore.GREEN
-    print(blue+"\t\t\t\t+---------------------------------------+")
-    print(blue+"\t\t\t\t|      Inspired from eWPTX & OWASP      |")
-    print(blue+"\t\t\t\t+=======================================+")
+    print(blue+"\t\t\t+-----------------------------------------------------+")
+    print(blue+"\t\t\t|   Inspired from eWPTX && OWASP && PortSwigger       |")
+    print(blue+"\t\t\t+=====================================================+")
