@@ -157,6 +157,30 @@ def check_header():
 
 
 '''
+HOST HEADER INJECTION
+'''
+def hostHeaderInjection():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    try:
+        time.sleep(1)
+        print(f"{ok} Detection HTTP Host Header Injection")
+        webbrowser.open(f"https://github.com/daffainfo/AllAboutBugBounty/blob/master/Host%20Header%20Injection.md")
+        print()
+    except Exception as e:
+        print(f"{error} An error is occured, {e}")
+    x=input(f"{ok} HTTP Host Header Injection described. Press enter")
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    time.sleep(1)
+
+
+
+'''
 SESSION HIJACKING
 '''
 def session_hijacking():
