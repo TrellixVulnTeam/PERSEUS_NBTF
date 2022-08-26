@@ -34,7 +34,7 @@ def web_run():
     others_info()
     print(Fore.WHITE)
     time.sleep(1)
-    scelta=input(f"Tools:\n1) WAF Detection {funzionante}\n2) Check Headers {funzionante}\n3) Enumeration {funzionante}\n4) XSS Payload {funzionante}\n5) SQLMap {funzionante}\n6) Clickjacking {funzionante}\n8) Unrestricted File Upload {funzionante}\n9) Session Hijacking {funzionante}\n10) Automatic Web Scanner NetSpark {funzionante}\n11) HTTP Verb Tampering {funzionante}\n12) HTTP Request Smuggling {funzionante}\n13) HTTP Host Header Injection {partial}\n14) Log4J Scanner {funzionante}\n15) Exit\n ---> ")
+    scelta=input(f"Tools:\n1) WAF Detection {funzionante}\n2) Check Headers {funzionante}\n3) Enumeration {funzionante}\n4) XSS Payload {funzionante}\n5) SQLMap {funzionante}\n6) Clickjacking {funzionante}\n8) Unrestricted File Upload {funzionante}\n9) Session Hijacking {funzionante}\n10) Automatic Web Scanner NetSpark {funzionante}\n11) HTTP Verb Tampering {funzionante}\n12) HTTP Request Smuggling {funzionante}\n13) HTTP Host Header Injection {partial}\n14) Server-side Template Injection SSTI {partial}\n15) Log4J Scanner {funzionante}\n16) Exit\n ---> ")
     scelta=int(scelta)
     if(scelta == 1):
         waf_detection()
@@ -80,7 +80,10 @@ def web_run():
     elif(scelta==13):
         hostHeaderInjection()
         web_run()
-    elif(scelta == 14):
+    elif(scelta==14):
+        ssti()
+        web_run()
+    elif(scelta == 15):
         log4J_shell()
         web_run()
     else:

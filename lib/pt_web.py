@@ -181,6 +181,54 @@ def hostHeaderInjection():
 
 
 '''
+SERVER-SIDE TEMPLATE INJECTION (SSTI)
+'''
+def ssti():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+    count=1
+    array2=[]
+    array3=[]
+    if platform.system() == "Windows":
+        print(f"{ok} Starting with the injection point...")
+        path=f"{root_path}ssti\\injection_point.txt"
+        print(f"{ok} Path for the Intruder: {path}")
+        print()
+        with open(path,"r") as file1:
+            lines=file1.readlines()
+            for line in lines:
+                if count%2!=0:
+                    array2.append(line)
+                else:
+                    array3.append(line)
+                count=count+1
+    else:
+        path=f"{root_path}ssti/injection_point.txt"
+        print(f"{ok} Path for the Intruder: {path}")
+        print()
+        with open(path,"r") as file1:
+            lines=file1.readlines()
+            for line in lines:
+                if count%2!=0:
+                    array2.append(line)
+                else:
+                    array3.append(line)
+                count=count+1
+
+    print(tabulate({"URL Decode": array2, "URL Encode": array3},headers="keys"))
+    print("\n")
+    x=input(f"{ok} Check SSTI completed. Press enter")
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    time.sleep(1)
+
+
+'''
 SESSION HIJACKING
 '''
 def session_hijacking():
